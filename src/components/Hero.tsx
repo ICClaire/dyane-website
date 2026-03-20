@@ -8,10 +8,22 @@ export default function Hero() {
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
+    const isMobile = window.matchMedia("(max-width: 768px)").matches;
+
+    if (isMobile) {
+      // No animation on mobile — show everything immediately
+      const els = sectionRef.current?.querySelectorAll(
+        ".hero-blob, .hero-flower, .hero-rule-line, .hero-diamond, .hero-subtitle, .hero-cta, .hero-scroll"
+      );
+      els?.forEach((el) => {
+        (el as HTMLElement).style.opacity = "1";
+      });
+      return;
+    }
+
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({ delay: 0.15 });
 
-      // 1. Blobs scale & breathe in from nothing
       tl.fromTo(
         ".hero-blob",
         { scale: 0.3, opacity: 0 },
@@ -19,7 +31,6 @@ export default function Hero() {
         0
       );
 
-      // 2. Small flower — spins in with overshoot
       tl.fromTo(
         ".hero-flower",
         { scale: 0, rotation: -150, opacity: 0 },
@@ -27,7 +38,6 @@ export default function Hero() {
         0.6
       );
 
-      // 4. Decorative lines — expand from center
       tl.fromTo(
         ".hero-rule-line",
         { scaleX: 0, opacity: 0 },
@@ -35,7 +45,6 @@ export default function Hero() {
         1.0
       );
 
-      // 5. Diamond — rotate in with overshoot
       tl.fromTo(
         ".hero-diamond",
         { scale: 0, rotation: 180, opacity: 0 },
@@ -43,7 +52,6 @@ export default function Hero() {
         1.15
       );
 
-      // 6. Subtitle — gentle rise
       tl.fromTo(
         ".hero-subtitle",
         { y: 28, opacity: 0 },
@@ -51,7 +59,6 @@ export default function Hero() {
         1.15
       );
 
-      // 7. CTA buttons — stagger in
       tl.fromTo(
         ".hero-cta",
         { y: 24, opacity: 0, scale: 0.92 },
@@ -59,7 +66,6 @@ export default function Hero() {
         1.4
       );
 
-      // 8. Scroll indicator — last to arrive
       tl.fromTo(
         ".hero-scroll",
         { opacity: 0, y: -15 },
@@ -67,7 +73,6 @@ export default function Hero() {
         2.0
       );
 
-      // After entrance, start the blob float
       tl.add(() => {
         gsap.utils.toArray<HTMLElement>(".hero-blob").forEach((blob, i) => {
           gsap.to(blob, {

@@ -9,6 +9,9 @@ export function HeroTitle() {
   useEffect(() => {
     if (!svgRef.current) return;
 
+    const isMobile = window.matchMedia("(max-width: 768px)").matches;
+    if (isMobile) return; // No animation on mobile — show text as-is
+
     const tl = gsap.timeline({ delay: 0.3 });
     const paths = svgRef.current.querySelectorAll("path, circle");
 

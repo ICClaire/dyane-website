@@ -43,24 +43,36 @@ export default function Process() {
   const cardRefs     = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
-    // Responsive container height — shorter on mobile to reduce scroll distance
-    const updateHeight = () => {
+    const mobile = () => window.innerWidth < 768;
+
+    const updateLayout = () => {
       if (!containerRef.current) return;
-      const isMobile = window.innerWidth < 768;
-      const multiplier = isMobile ? 60 : 100;
-      containerRef.current.style.height = `${(steps.length + 0.3) * multiplier}vh`;
+      const isMob = mobile();
+      // Mobile: shorter scroll per card so sticky kicks in sooner
+      const mult = isMob ? 45 : 100;
+      containerRef.current.style.height = `${(steps.length + 0.3) * mult}vh`;
+
+      // Position cards: centered on mobile (20vh for 60vh card), top-aligned on desktop
+      cardRefs.current.forEach((card, i) => {
+        if (!card) return;
+        card.style.top = isMob
+          ? `calc(20vh + ${i * 18}px)`
+          : `calc(5vh + ${i * 28}px)`;
+      });
     };
-    updateHeight();
-    window.addEventListener("resize", updateHeight);
+    updateLayout();
+    window.addEventListener("resize", updateLayout);
 
     const handle = () => {
       if (!containerRef.current) return;
       const scrolled = -containerRef.current.getBoundingClientRect().top;
       const wh = window.innerHeight;
+      // Match step size to the container multiplier
+      const stepPx = mobile() ? wh * 0.45 : wh;
 
       cardRefs.current.forEach((card, i) => {
         if (!card) return;
-        const progress    = Math.max(0, Math.min(1, (scrolled - i * wh) / wh));
+        const progress    = Math.max(0, Math.min(1, (scrolled - i * stepPx) / stepPx));
         const targetScale = 1 - (steps.length - 1 - i) * 0.05;
         const scale       = 1 - progress * (1 - targetScale);
         card.style.transform = `scale(${scale})`;
@@ -70,7 +82,7 @@ export default function Process() {
     window.addEventListener("scroll", handle, { passive: true });
     handle();
     return () => {
-      window.removeEventListener("resize", updateHeight);
+      window.removeEventListener("resize", updateLayout);
       window.removeEventListener("scroll", handle);
     };
   }, []);
@@ -105,12 +117,11 @@ export default function Process() {
             ref={el => { cardRefs.current[i] = el; }}
             style={{
               position: "sticky",
-              top: `calc(5vh + ${i * 28}px)`,
               zIndex: i + 1,
               transformOrigin: "top center",
               backgroundColor: step.bg,
             }}
-            className="mx-6 md:mx-32 lg:mx-48 rounded-2xl md:rounded-3xl overflow-hidden shadow-xl h-[54vh] md:h-[80vh]"
+            className="mx-4 md:mx-32 lg:mx-48 rounded-2xl md:rounded-3xl overflow-hidden shadow-xl h-[60vh] md:h-[80vh]"
           >
             <div className="h-full flex flex-col md:grid md:grid-cols-2 relative overflow-hidden">
 
