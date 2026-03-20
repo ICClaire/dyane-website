@@ -112,7 +112,7 @@ export default function FAQ() {
   }, []);
 
   return (
-    <section id="faq" className="py-28 bg-cream relative overflow-hidden">
+    <section id="faq" className="py-28 bg-parchment/50 relative overflow-hidden">
       <div className="max-w-6xl mx-auto px-6">
         <div className="grid md:grid-cols-[1fr_1.6fr] gap-16 md:gap-40 items-start">
 

@@ -6,6 +6,10 @@ interface Props {
   className?: string;
   style?: React.CSSProperties;
   svgStyle?: string;
+  /** Animate on load instead of on scroll */
+  autoPlay?: boolean;
+  /** Duration in ms for autoPlay animation (default 3000) */
+  autoPlayDuration?: number;
 }
 
 const STEM_FILLS = new Set(["#637A39", "#8D957E"]);
@@ -15,7 +19,7 @@ function isStem(el: Element) {
   return STEM_FILLS.has(fill);
 }
 
-export default function ScrollDrawSVG({ src, className, style, svgStyle }: Props) {
+export default function ScrollDrawSVG({ src, className, style, svgStyle, autoPlay = false, autoPlayDuration = 3000 }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [svgContent, setSvgContent] = useState("");
 
@@ -77,6 +81,29 @@ export default function ScrollDrawSVG({ src, className, style, svgStyle }: Props
     const n = stems.length;
     const overlap = 0.7;
 
+    if (autoPlay) {
+      // Animate on load with requestAnimationFrame
+      const startTime = performance.now();
+      let rafId: number;
+
+      const tick = (now: number) => {
+        const global = Math.min(1, (now - startTime) / autoPlayDuration);
+
+        stems.forEach(({ el, length }, i) => {
+          if (!length) return;
+          const start = i / (n + n * overlap);
+          const end = (i + n * overlap) / (n + n * overlap);
+          const p = Math.min(1, Math.max(0, (global - start) / (end - start)));
+          el.setAttribute("stroke-dashoffset", String(length * (1 - p)));
+        });
+
+        if (global < 1) rafId = requestAnimationFrame(tick);
+      };
+
+      rafId = requestAnimationFrame(tick);
+      return () => cancelAnimationFrame(rafId);
+    }
+
     const handleScroll = () => {
       const container = containerRef.current;
       if (!container) return;
@@ -101,7 +128,7 @@ export default function ScrollDrawSVG({ src, className, style, svgStyle }: Props
     handleScroll();
 
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [svgContent]);
+  }, [svgContent, autoPlay, autoPlayDuration]);
 
   return (
     <div

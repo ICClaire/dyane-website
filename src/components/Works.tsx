@@ -11,7 +11,7 @@ const photos = [
   { id: 4, src: "/tattoos/tattoo-japanese-inspo.jpeg",  title: "Japanese Inspo",  category: "Floral",     left: "calc(50% + 320px)", top: 620,  w: 410, h: 547, speed: 0.20 },
   { id: 5, src: "/tattoos/placeholder1.jpg",            title: "Study I",         category: "Minimalist", left: "calc(50% - 650px)", top: 720,  w: 400, h: 533, speed: 0.30 },
   { id: 6, src: "/tattoos/placeholder3.jpg",            title: "Study II",        category: "Botanical",  left: "calc(50% - 190px)", top: 760,  w: 440, h: 587, speed: 0.17 },
-  { id: 7, src: "/tattoos/placeholder-4.jpg",           title: "Study III",       category: "Fine Line",  left: "calc(50% + 240px)", top: 1240, w: 370, h: 493, speed: 0.26 },
+  { id: 7, src: "/tattoos/placeholder-4.jpg",           title: "Study III",       category: "Fine Line",  left: "calc(50% - 185px)", top: 1240, w: 370, h: 493, speed: 0.26 },
 ];
 
 export default function Works() {
@@ -86,9 +86,9 @@ export default function Works() {
   const rightPhotos = photos.filter((_, i) => i % 2 === 1);
 
   return (
-    <section ref={sectionRef} id="works" className="bg-cream overflow-hidden relative">
+    <section ref={sectionRef} id="works" className="bg-parchment/50 overflow-hidden relative">
       {/* Header */}
-      <div className="max-w-6xl mx-auto px-6 pt-28 pb-10 relative z-10">
+      <div className="relative z-10 pt-28 pb-6 md:pb-10 px-6 md:px-16">
         <div
           ref={headerRef}
           style={{
@@ -96,22 +96,22 @@ export default function Works() {
             transform: "translateY(28px)",
             transition: "opacity 0.85s cubic-bezier(.22,1,.36,1), transform 0.85s cubic-bezier(.22,1,.36,1)",
           }}
-          className="text-center"
         >
-          <p className="text-xs tracking-[0.3em] uppercase text-bark/50 mb-4">Portfolio</p>
-          <h2 className="font-heading text-5xl md:text-6xl text-bark">My Work</h2>
-          <FloralDivider className="w-64 mx-auto mt-6 opacity-70" />
+          <h2 className="font-heading text-[4rem] leading-[0.85] md:text-[10rem] lg:text-[13rem] text-rose -ml-1 md:-ml-3">
+            My Work
+          </h2>
+          <FloralDivider className="w-48 mt-6 opacity-50" />
         </div>
       </div>
 
       {/* Two-flower decoration */}
       <DrawSVG
         src="/two-flower.svg"
-        className="hidden md:block absolute pointer-events-none select-none"
-        style={{ width: 700, right: -120, bottom: 60, top: "auto", opacity: 0.55, transform: "scaleX(-1)", zIndex: 1 }}
+        className="absolute pointer-events-none select-none"
+        style={{ width: "clamp(280px, 50vw, 700px)", right: -120, bottom: 60, top: "auto", opacity: 0.55, transform: "scaleX(-1)", zIndex: 1 }}
         svgStyle="width:100%;height:auto;display:block;"
         triggerOnView
-        delayPerStroke={70}
+        delayPerStroke={30}
       />
 
       {/* Mobile two-column parallax */}

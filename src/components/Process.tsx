@@ -79,26 +79,25 @@ export default function Process() {
     <section id="process">
 
       {/* ── Header ── */}
-      <div className="py-28 text-center bg-petal/60 relative overflow-hidden">
+      <div className="relative bg-parchment/50 overflow-hidden pt-28 pb-20 md:pt-36 md:pb-28">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src="/one-flower-pink.png"
           alt=""
           className="absolute top-1/2 -translate-y-1/2 -left-24 w-48 md:w-96 h-auto opacity-40 pointer-events-none select-none"
         />
-        <p className="text-xs tracking-[0.3em] uppercase text-bark/50 mb-4">How It Works</p>
-        <h2 className="font-heading text-5xl md:text-6xl text-bark">The Process</h2>
-        <FloralDivider className="w-64 mx-auto mt-6 opacity-70" />
-        <p className="mt-6 text-sm text-bark-light/70 max-w-md mx-auto leading-relaxed">
-          Getting a tattoo should feel as beautiful as the result.
-          Here&rsquo;s how we&rsquo;ll work together from first hello to forever.
-        </p>
+
+        <div className="relative z-10 px-6 md:px-16 text-right">
+          <h2 className="font-heading text-[3.5rem] md:text-[7rem] lg:text-[9rem] leading-[0.85] text-bark">
+            The Process
+          </h2>
+        </div>
       </div>
 
       {/* ── Sticky cards ── */}
       <div
         ref={containerRef}
-        className="relative"
+        className="relative bg-parchment/50"
       >
         {steps.map((step, i) => (
           <div
@@ -140,21 +139,14 @@ export default function Process() {
               </div>
 
               {/* Bottom / Right: content */}
-              <div className="flex flex-col justify-center md:justify-between px-4 py-3 md:p-14 relative z-10 overflow-hidden" style={{ flex: "1 1 auto" }}>
-                {/* Ghost number — desktop only */}
+              <div className="flex flex-col justify-center md:justify-between px-4 py-3 md:p-14 relative z-10" style={{ flex: "1 1 auto" }}>
+                {/* Ghost number */}
                 <span
-                  className="hidden md:block absolute -bottom-20 right-4 font-heading text-[14vw] leading-none select-none pointer-events-none text-rose/[0.12]"
+                  className="absolute -bottom-4 md:-bottom-12 right-4 md:right-6 font-heading text-[40vw] md:text-[30vw] leading-none select-none pointer-events-none text-rose/[0.05]"
                   style={{ lineHeight: 1 }}
                 >
                   {step.num}
                 </span>
-
-                {/* Counter — desktop only */}
-                <div className="hidden md:flex items-center justify-end">
-                  <span className="text-[10px] tracking-[0.2em] uppercase text-bark-light/30">
-                    {step.num}&nbsp;/&nbsp;{String(steps.length).padStart(2, "0")}
-                  </span>
-                </div>
 
                 {/* Title + desc */}
                 <div className="text-center md:text-left">
@@ -176,7 +168,7 @@ export default function Process() {
       </div>
 
       {/* ── CTA below cards ── */}
-      <div className="py-24 text-center bg-petal/40">
+      <div className="py-24 text-center bg-parchment/50">
         <a
           href="https://form.jotform.com/211304498108856?utm_source=ig&utm_medium=social&utm_content=link_in_bio&fbclid=PAZXh0bgNhZW0CMTEAc3J0YwZhcHBfaWQMMjU2MjgxMDQwNTU4AAGnL0VP716BPGocT4es00Yl_uuoMdckS1mTshJx8Uqayk-XrCkdCc6UP_hGLxk_aem_QeuvWN3hCSKCxJHID9HJig"
           target="_blank"

@@ -1,161 +1,160 @@
 "use client";
 import { useEffect, useRef } from "react";
-import Image from "next/image";
-import { FloralDivider, SmallFlower } from "./FlowerDecor";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-const navLinks = [
-  { label: "Works", href: "#works" },
-  { label: "About", href: "#about" },
-  { label: "Process", href: "#process" },
-  { label: "Reviews", href: "#testimonials" },
-];
+gsap.registerPlugin(ScrollTrigger);
 
-const socials = [
-  {
-    label: "Instagram",
-    href: "https://www.instagram.com/chan.inkedd/",
-    icon: (
-      <svg viewBox="0 0 24 24" className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="1.5">
-        <rect x="2" y="2" width="20" height="20" rx="5" />
-        <circle cx="12" cy="12" r="5" />
-        <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
-      </svg>
-    ),
-  },
-];
+const BOOKING_URL =
+  "https://form.jotform.com/211304498108856?utm_source=ig&utm_medium=social&utm_content=link_in_bio&fbclid=PAZXh0bgNhZW0CMTEAc3J0YwZhcHBfaWQMMjU2MjgxMDQwNTU4AAGnL0VP716BPGocT4es00Yl_uuoMdckS1mTshJx8Uqayk-XrCkdCc6UP_hGLxk_aem_QeuvWN3hCSKCxJHID9HJig";
 
 export default function Footer() {
-  const ctaRef = useRef<HTMLDivElement>(null);
+  const footerRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    const obs = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            (entry.target as HTMLElement).style.opacity = "1";
-            (entry.target as HTMLElement).style.transform = "translateY(0)";
-            obs.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.2 }
-    );
-    if (ctaRef.current) obs.observe(ctaRef.current);
-    return () => obs.disconnect();
+    const footer = footerRef.current;
+    if (!footer) return;
+
+    const ctx = gsap.context(() => {
+      // Flowers drift up
+      gsap.from(".footer-flower-left", {
+        y: 100,
+        opacity: 0,
+        duration: 1.8,
+        ease: "power2.out",
+        scrollTrigger: { trigger: footer, start: "top 85%" },
+      });
+      gsap.from(".footer-flower-right", {
+        y: 100,
+        opacity: 0,
+        duration: 1.8,
+        delay: 0.15,
+        ease: "power2.out",
+        scrollTrigger: { trigger: footer, start: "top 85%" },
+      });
+
+      // Gentle sway
+      gsap.to(".footer-flower-left", {
+        rotate: 1.5,
+        duration: 5,
+        ease: "sine.inOut",
+        repeat: -1,
+        yoyo: true,
+        transformOrigin: "bottom center",
+      });
+
+      // Content reveal
+      gsap.from(footer.querySelectorAll(".reveal"), {
+        y: 25,
+        opacity: 0,
+        duration: 0.8,
+        ease: "power3.out",
+        stagger: 0.08,
+        scrollTrigger: { trigger: footer, start: "top 75%" },
+      });
+    }, footer);
+
+    return () => ctx.revert();
   }, []);
 
   return (
-    <footer id="contact" className="relative overflow-hidden" style={{ backgroundColor: "#6F866A" }}>
-      {/* Background texture */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(143,166,140,0.08)_0%,transparent_60%)] pointer-events-none" />
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,rgba(194,133,143,0.08)_0%,transparent_60%)] pointer-events-none" />
+    <footer
+      ref={footerRef}
+      id="contact"
+      className="relative overflow-hidden bg-parchment/50"
+    >
+      {/* Warm glow from center */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(191,128,144,0.08)_0%,transparent_60%)] pointer-events-none" />
 
-      {/* Botanical decorations */}
+      {/* two-flower — left, anchored at bottom */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src="/flower-long.svg" alt="" className="absolute left-0 bottom-0 h-64 w-auto opacity-20 pointer-events-none select-none" />
-      <Image src="/two-flower.svg" alt="" width={140} height={140} className="absolute right-6 top-10 w-32 h-auto opacity-15 pointer-events-none select-none rotate-6" />
+      <img
+        src="/two-flower.svg"
+        alt=""
+        className="footer-flower-left absolute bottom-0 -left-12 sm:left-0 h-[50%] sm:h-[60%] md:h-[70%] w-auto pointer-events-none select-none"
+      />
 
-      {/* CTA Banner */}
-      <div className="border-b border-cream/10">
-        <div
-          ref={ctaRef}
-          style={{
-            opacity: 0,
-            transform: "translateY(32px)",
-            transition: "opacity 0.9s cubic-bezier(.22,1,.36,1), transform 0.9s cubic-bezier(.22,1,.36,1)",
-          }}
-          className="max-w-6xl mx-auto px-6 py-16 text-center"
+      {/* flower-long — right, anchored at bottom, flipped */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src="/flower-long.svg"
+        alt=""
+        className="footer-flower-right absolute bottom-0 -right-10 sm:right-0 h-[55%] sm:h-[65%] md:h-[75%] w-auto pointer-events-none select-none"
+        style={{ transform: "scaleX(-1)" }}
+      />
+
+      {/* Content */}
+      <div className="relative z-10 flex flex-col items-center text-center px-6 pt-28 sm:pt-32 pb-10">
+        {/* Big name */}
+        <h2 className="reveal font-heading text-7xl sm:text-8xl md:text-9xl text-bark leading-none mb-5">
+          chan.inked
+        </h2>
+
+        {/* Tagline */}
+        <p className="reveal text-bark/70 text-base sm:text-lg tracking-wide max-w-md leading-relaxed mb-10">
+          Fine line tattoos rooted in botanical beauty and the stories we carry on our skin.
+        </p>
+
+        {/* Book button */}
+        <a
+          href={BOOKING_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="reveal group inline-flex items-center gap-2 px-8 py-3.5 rounded-full border border-bark/30 text-bark text-sm tracking-[0.2em] uppercase hover:border-rose/50 hover:text-rose transition-all duration-500"
         >
-          <SmallFlower className="w-10 h-10 mx-auto mb-6 opacity-40" />
-          <h2 className="font-heading text-4xl md:text-5xl text-cream mb-3">
-            Ready to wear a little garden?
-          </h2>
-          <p className="text-cream/50 text-sm mb-8 max-w-md mx-auto leading-relaxed">
-            I take on a limited number of bookings each month to give each client
-            the care and attention they deserve.
-          </p>
+          <span>Book a Session</span>
+          <svg
+            className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={1.5}
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
+          </svg>
+        </a>
+
+        {/* Social + location */}
+        <div className="reveal mt-16 flex flex-col sm:flex-row items-center gap-6 sm:gap-10 text-bark/60 text-sm tracking-wider">
           <a
-            href="https://form.jotform.com/211304498108856?utm_source=ig&utm_medium=social&utm_content=link_in_bio&fbclid=PAZXh0bgNhZW0CMTEAc3J0YwZhcHBfaWQMMjU2MjgxMDQwNTU4AAGnL0VP716BPGocT4es00Yl_uuoMdckS1mTshJx8Uqayk-XrCkdCc6UP_hGLxk_aem_QeuvWN3hCSKCxJHID9HJig"
+            href="https://www.instagram.com/chan.inkedd/"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-3 px-8 py-3.5 bg-white text-bark text-xs tracking-[0.2em] uppercase rounded-full hover:bg-cream transition-all duration-300"
+            className="flex items-center gap-2 hover:text-rose transition-colors duration-300"
           >
-            Book a Session
+            <svg viewBox="0 0 24 24" className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="1.5">
+              <rect x="2" y="2" width="20" height="20" rx="5" />
+              <circle cx="12" cy="12" r="5" />
+              <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
+            </svg>
+            <span>@chan.inkedd</span>
+          </a>
+
+          <span className="hidden sm:block w-1 h-1 rounded-full bg-bark/30" />
+          <span>Fleetwood, B.C.</span>
+          <span className="hidden sm:block w-1 h-1 rounded-full bg-bark/30" />
+
+          <a
+            href="mailto:hello@chan.inked"
+            className="hover:text-rose transition-colors duration-300"
+          >
+            hello@chan.inked
           </a>
         </div>
       </div>
 
-      {/* Main footer body */}
-      <div className="max-w-6xl mx-auto px-6 py-14">
-        <div className="grid md:grid-cols-3 gap-10 md:gap-6 text-center md:text-left">
-          {/* Brand */}
-          <div className="flex flex-col items-center md:items-start">
-            <p className="font-heading text-4xl text-cream mb-3">chan.inked</p>
-            <FloralDivider className="w-40 mb-4 opacity-20" />
-            <p className="text-cream/40 text-xs leading-relaxed max-w-[220px]">
-              Fine line tattoo art rooted in botanical beauty, minimalism, and
-              the stories we carry on our skin.
-            </p>
-          </div>
-
-          {/* Navigation */}
-          <div className="flex flex-col items-center md:items-start">
-            <p className="text-xs tracking-[0.25em] uppercase text-cream/60 mb-5">Navigation</p>
-            <ul className="space-y-3">
-              {navLinks.map((l) => (
-                <li key={l.label}>
-                  <a
-                    href={l.href}
-                    className="text-cream/50 hover:text-cream text-sm transition-colors tracking-wide"
-                  >
-                    {l.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Contact & socials */}
-          <div className="flex flex-col items-center md:items-start">
-            <p className="text-xs tracking-[0.25em] uppercase text-cream/60 mb-5">Get in Touch</p>
-            <a
-              href="mailto:hello@chan.inked"
-              className="text-cream/60 hover:text-cream text-sm transition-colors block mb-2"
-            >
-              hello@chan.inked
-            </a>
-            <p className="text-cream/30 text-xs mb-6">Fleetwood B.C · Worldwide</p>
-            <div className="flex gap-4">
-              {socials.map((s) => (
-                <a
-                  key={s.label}
-                  href={s.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={s.label}
-                  className="w-9 h-9 rounded-full border border-cream/15 flex items-center justify-center text-cream/50 hover:text-cream hover:border-cream/40 transition-all"
-                >
-                  {s.icon}
-                </a>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* Bottom bar */}
-        <div className="mt-14 pt-6 border-t border-cream/10 flex flex-col items-center md:flex-row md:justify-between gap-3 text-center">
-          <p className="text-cream/25 text-xs tracking-wider">
-            © {new Date().getFullYear()} chan.inked. All rights reserved.
-          </p>
-          <a
-            href="https://cloverfield.studio/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-cream/20 hover:text-cream/40 text-xs transition-colors tracking-wider"
-          >
-            built with care by cloverfield
-          </a>
-        </div>
+      {/* Bottom strip */}
+      <div className="relative z-10 border-t border-bark/15 py-5 flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-6 text-bark/40 text-xs tracking-wider px-6">
+        <span>© {new Date().getFullYear()} chan.inked</span>
+        <span className="hidden sm:block">·</span>
+        <a
+          href="https://cloverfield.studio/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="hover:text-bark/70 transition-colors duration-300"
+        >
+          built with care by cloverfield
+        </a>
       </div>
     </footer>
   );

@@ -12,11 +12,13 @@ export default function Home() {
   return (
     <main className="relative">
       {/* flower-long stretching from hero through about */}
-      <div className="absolute -left-12 sm:-left-14 top-[28vh] h-[80vh] sm:h-[200vh] w-auto pointer-events-none z-10 opacity-40 sm:opacity-70 select-none">
+      <div className="absolute -left-32 sm:-left-14 top-[18vh] h-[140vh] sm:h-[200vh] w-auto pointer-events-none z-[1] opacity-40 sm:opacity-70 select-none">
         <ScrollDrawSVG
           src="/flower-long.svg"
           className="h-full"
           svgStyle="height:100%;width:auto;display:block;"
+          autoPlay
+          autoPlayDuration={3500}
         />
       </div>
 

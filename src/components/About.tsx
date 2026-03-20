@@ -1,7 +1,8 @@
 "use client";
 import { useEffect, useRef } from "react";
-import Image from "next/image";
 import { FloralDivider, SmallLeaf } from "./FlowerDecor";
+import DrawSVG from "./DrawSVG";
+import PhotoFlip from "./PhotoFlip";
 
 export default function About() {
   const imageRef = useRef<HTMLDivElement>(null);
@@ -27,7 +28,11 @@ export default function About() {
     return () => obs.disconnect();
   }, []);
 
-  const tags = ["Fine Line", "Botanical", "Minimalist", "Floral", "Watercolour"];
+  const stats = [
+    { value: "500+", label: "Tattoos Done" },
+    { value: "4+", label: "Years Experience" },
+    { value: "100%", label: "Custom Designs" },
+  ];
 
   return (
     <section id="about" className="py-28 bg-parchment/50 relative overflow-hidden">
@@ -42,17 +47,9 @@ export default function About() {
               transform: "translateX(-50px)",
               transition: "opacity 0.95s cubic-bezier(.22,1,.36,1), transform 0.95s cubic-bezier(.22,1,.36,1)",
             }}
-            className="relative"
+            className="relative z-[2] flex items-center justify-center"
           >
-            <div className="relative aspect-[3/4] rounded-2xl overflow-hidden shadow-sm">
-              <Image
-                src="/dyane-portrait1.png"
-                alt="Dyane, tattoo artist"
-                fill
-                className="object-cover object-top"
-                priority
-              />
-            </div>
+            <PhotoFlip />
             <SmallLeaf className="absolute -top-4 -left-4 w-10 h-10 opacity-60 rotate-12" />
           </div>
 
@@ -72,49 +69,49 @@ export default function About() {
               Hello, I&rsquo;m Dyane.
             </h2>
 
-            <FloralDivider className="w-48 mb-8 opacity-70" />
-
-            <div className="space-y-4 text-base text-bark-light/80 leading-relaxed">
+            <div className="space-y-4 text-lg font-medium text-bark-light leading-relaxed">
               <p>
-                I&rsquo;m a fine-line tattoo artist based in Fleetwood, B.C. at Ink House.
-                Every session I do is treated as a baptism moment, something sacred,
-                meaningful, and entirely your own. From the first sketch to the final
-                line, each piece is special to me.
+                Fine-line tattoo artist based in Fleetwood, B.C. at Ink House.
+                Every piece is sketched from scratch. No templates, no flash. Just
+                art made specifically for you, your body, and your story.
               </p>
               <p>
-                I love getting to know the people who sit in my chair, not just
-                why you&rsquo;re getting the tattoo, but who you are and where you&rsquo;re
-                headed. That energy shapes everything. My sessions are therapeutic,
-                calm, and creatively collaborative.
-              </p>
-              <p>
-                I sketch every design from scratch, draft by draft, until it&rsquo;s
-                perfect. No templates, no flash. Just art made specifically for
-                you, your body, and your story.
+                My sessions are calm, collaborative, and treated like a baptism
+                moment. Something sacred, meaningful, and entirely your own.
               </p>
             </div>
 
-            {/* Tags */}
-            <div className="flex flex-wrap gap-2 mt-8">
-              {tags.map((tag, i) => (
-                <span
-                  key={tag}
+            {/* Stats */}
+            <div className="flex gap-8 mt-10">
+              {stats.map((stat, i) => (
+                <div
+                  key={stat.label}
                   ref={(el) => { tagRefs.current[i] = el; }}
                   style={{
                     opacity: 0,
                     transform: "translateY(16px)",
-                    transition: `opacity 0.6s ease ${300 + i * 80}ms, transform 0.6s ease ${300 + i * 80}ms`,
+                    transition: `opacity 0.6s ease ${300 + i * 100}ms, transform 0.6s ease ${300 + i * 100}ms`,
                   }}
-                  className="text-xs tracking-wider uppercase px-3 py-1.5 rounded-full bg-sage-pale/60 text-sage border border-sage-light/50"
                 >
-                  {tag}
-                </span>
+                  <p className="text-2xl font-semibold text-bark">{stat.value}</p>
+                  <p className="text-xs tracking-wider uppercase text-bark-light/50 mt-1">{stat.label}</p>
+                </div>
               ))}
             </div>
           </div>
 
         </div>
       </div>
+
+      {/* Two-flower decoration — bottom right */}
+      <DrawSVG
+        src="/two-flower.svg"
+        className="absolute pointer-events-none select-none"
+        style={{ width: 280, right: -40, bottom: -20, opacity: 0.3, zIndex: 1 }}
+        svgStyle="width:100%;height:auto;display:block;"
+        triggerOnView
+        delayPerStroke={30}
+      />
     </section>
   );
 }
