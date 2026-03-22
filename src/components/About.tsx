@@ -214,11 +214,11 @@ export default function About() {
 
           {/* Text side */}
           <div className="flex flex-col">
-            <p ref={labelRef} className="text-xs tracking-[0.3em] uppercase text-bark/50 mb-4" style={{ opacity: 0, transform: "translateY(12px)" }}>
+            <p ref={labelRef} className="hidden md:block text-xs tracking-[0.3em] uppercase text-bark/50 mb-4" style={{ opacity: 0, transform: "translateY(12px)" }}>
               About Me
             </p>
 
-            <h2 ref={headingRef} className="font-heading text-5xl md:text-6xl text-bark leading-tight mb-6" style={{ opacity: 0, transform: "translateY(20px)" }}>
+            <h2 ref={headingRef} className="font-heading text-4xl md:text-6xl text-bark leading-tight mb-6 whitespace-nowrap" style={{ opacity: 0, transform: "translateY(20px)" }}>
               Hello, I&rsquo;m Dyane.
             </h2>
 
