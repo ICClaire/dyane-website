@@ -217,7 +217,7 @@ export default function Works() {
       />
 
       {/* Mobile two-column parallax */}
-      <div className="md:hidden flex gap-3 px-4">
+      <div className="md:hidden flex gap-3 px-4 overflow-hidden pb-4">
         {/* Left column — slower */}
         <div
           ref={mobileLeftRef}
