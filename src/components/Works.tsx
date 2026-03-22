@@ -113,7 +113,10 @@ export default function Works() {
 
   useEffect(() => {
     // Parallax (desktop + mobile columns)
-    const handleScroll = () => {
+    let rafId = 0;
+    let ticking = false;
+
+    const updateParallax = () => {
       const section = sectionRef.current;
       if (!section) return;
       const scrolled = -section.getBoundingClientRect().top;
@@ -122,20 +125,28 @@ export default function Works() {
       photos.forEach((photo, i) => {
         const el = photoRefs.current[i];
         if (el) {
-          el.style.transform = `translateY(${scrolled * photo.speed}px)`;
+          el.style.transform = `translate3d(0,${scrolled * photo.speed}px,0)`;
         }
       });
 
       // Mobile two-column parallax
       if (mobileLeftRef.current) {
-        mobileLeftRef.current.style.transform = `translateY(${scrolled * 0.05}px)`;
+        mobileLeftRef.current.style.transform = `translate3d(0,${scrolled * 0.05}px,0)`;
       }
       if (mobileRightRef.current) {
-        mobileRightRef.current.style.transform = `translateY(${scrolled * 0.12}px)`;
+        mobileRightRef.current.style.transform = `translate3d(0,${scrolled * 0.12}px,0)`;
+      }
+      ticking = false;
+    };
+
+    const handleScroll = () => {
+      if (!ticking) {
+        rafId = requestAnimationFrame(updateParallax);
+        ticking = true;
       }
     };
     window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll();
+    updateParallax();
 
     // Entrance fade
     const obs = new IntersectionObserver(
@@ -168,6 +179,7 @@ export default function Works() {
 
     return () => {
       window.removeEventListener("scroll", handleScroll);
+      cancelAnimationFrame(rafId);
       obs.disconnect();
     };
   }, []);
@@ -198,7 +210,7 @@ export default function Works() {
       <DrawSVG
         src="/two-flower.svg"
         className="absolute pointer-events-none select-none"
-        style={{ width: "clamp(280px, 50vw, 700px)", right: -120, bottom: 60, top: "auto", opacity: 0.55, transform: "scaleX(-1)", zIndex: 1 }}
+        style={{ width: "clamp(280px, 50vw, 700px)", right: -120, bottom: -200, top: "auto", opacity: 0.55, transform: "scaleX(-1)", zIndex: 0 }}
         svgStyle="width:100%;height:auto;display:block;"
         triggerOnView
         delayPerStroke={30}
