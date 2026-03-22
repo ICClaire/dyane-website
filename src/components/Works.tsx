@@ -269,7 +269,7 @@ export default function Works() {
       </div>
 
       {/* CTA */}
-      <div className="text-center pb-20 relative z-10">
+      <div className="hidden md:block text-center pb-20 relative z-10">
         <InstagramButton />
       </div>
     </section>
