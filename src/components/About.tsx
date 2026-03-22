@@ -218,7 +218,7 @@ export default function About() {
               About Me
             </p>
 
-            <h2 ref={headingRef} className="font-heading text-4xl md:text-6xl text-bark leading-tight mb-6 whitespace-nowrap" style={{ opacity: 0, transform: "translateY(20px)" }}>
+            <h2 ref={headingRef} className="font-heading text-[3.2rem] md:text-6xl text-bark leading-tight mb-6 whitespace-nowrap" style={{ opacity: 0, transform: "translateY(20px)" }}>
               Hello, I&rsquo;m Dyane.
             </h2>
 
