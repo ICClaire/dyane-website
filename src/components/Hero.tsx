@@ -102,23 +102,15 @@ export default function Hero() {
           Tattoo Artist in Fleetwood B.C @ Ink House
         </p>
 
-        {/* CTA Buttons */}
-        <div className="flex flex-col sm:flex-row gap-4 items-stretch sm:items-center w-full sm:w-auto">
-          <a
-            href="#works"
-            className="hero-cta px-8 py-3.5 bg-rose text-cream text-xs tracking-[0.2em] uppercase rounded-full hover:bg-bark transition-all duration-300 hover:shadow-lg text-center opacity-100 md:opacity-0"
-          >
-            View My Work
-          </a>
-          <a
-            href="https://form.jotform.com/211304498108856?utm_source=ig&utm_medium=social&utm_content=link_in_bio&fbclid=PAZXh0bgNhZW0CMTEAc3J0YwZhcHBfaWQMMjU2MjgxMDQwNTU4AAGnL0VP716BPGocT4es00Yl_uuoMdckS1mTshJx8Uqayk-XrCkdCc6UP_hGLxk_aem_QeuvWN3hCSKCxJHID9HJig"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hero-cta px-8 py-3.5 border border-bark/25 text-bark text-xs tracking-[0.2em] uppercase rounded-full hover:border-rose hover:text-rose transition-all duration-300 text-center opacity-100 md:opacity-0"
-          >
-            Book a Session
-          </a>
-        </div>
+        {/* CTA */}
+        <a
+          href="https://form.jotform.com/211304498108856?utm_source=ig&utm_medium=social&utm_content=link_in_bio&fbclid=PAZXh0bgNhZW0CMTEAc3J0YwZhcHBfaWQMMjU2MjgxMDQwNTU4AAGnL0VP716BPGocT4es00Yl_uuoMdckS1mTshJx8Uqayk-XrCkdCc6UP_hGLxk_aem_QeuvWN3hCSKCxJHID9HJig"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="hero-cta px-10 py-3.5 bg-rose text-cream text-xs tracking-[0.2em] uppercase rounded-full hover:bg-bark transition-all duration-300 hover:shadow-lg text-center opacity-100 md:opacity-0"
+        >
+          Let&apos;s Create Something
+        </a>
       </div>
 
       {/* Scroll indicator */}

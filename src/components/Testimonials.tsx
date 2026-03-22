@@ -79,25 +79,25 @@ function MarqueeRow({
         {items.map((r, i) => (
           <div
             key={`${r.name}-${i}`}
-            className="group relative flex-shrink-0 w-[340px] sm:w-[380px] md:w-[420px] h-[260px] sm:h-[280px] rounded-2xl overflow-hidden cursor-pointer"
+            className="group relative flex-shrink-0 w-[260px] sm:w-[380px] md:w-[420px] h-[220px] sm:h-[280px] rounded-2xl overflow-hidden cursor-pointer"
           >
             {/* Default card content */}
-            <div className="absolute inset-0 bg-cream/80 border border-blush-deep/15 rounded-2xl p-7 sm:p-8 flex flex-col justify-between transition-opacity duration-500 group-hover:opacity-0">
+            <div className="absolute inset-0 bg-cream/80 border border-blush-deep/15 rounded-2xl p-5 sm:p-8 flex flex-col justify-between transition-opacity duration-500 group-hover:opacity-0">
               {/* Quote mark */}
-              <div className="text-rose/25 mb-3">
-                <svg width="28" height="20" viewBox="0 0 28 20" fill="currentColor">
+              <div className="text-rose/25 mb-2 sm:mb-3">
+                <svg width="22" height="16" viewBox="0 0 28 20" fill="currentColor" className="sm:w-7 sm:h-5">
                   <path d="M0 20V11.5C0 4.5 3.5 1 10.5 0l1.5 3C8 4.2 6 6.5 5.8 10H11v10H0zm16.5 0V11.5C16.5 4.5 20 1 27 0l1.5 3C24.5 4.2 22.5 6.5 22.3 10H27.5v10h-11z" />
                 </svg>
               </div>
 
               {/* Review text */}
-              <p className="text-[15px] sm:text-base text-bark-light leading-relaxed mb-6 flex-1">
+              <p className="text-[13px] sm:text-base text-bark-light leading-relaxed mb-3 sm:mb-6 flex-1 line-clamp-4 sm:line-clamp-none">
                 {r.text}
               </p>
 
               {/* Author + tattoo photo */}
-              <div className="flex items-center gap-3">
-                <div className="relative w-10 h-10 rounded-full overflow-hidden flex-shrink-0 border border-blush-deep/20">
+              <div className="flex items-center gap-2 sm:gap-3">
+                <div className="relative w-8 h-8 sm:w-10 sm:h-10 rounded-full overflow-hidden flex-shrink-0 border border-blush-deep/20">
                   <Image
                     src={r.img}
                     alt={r.tattoo}
@@ -149,12 +149,15 @@ export default function Testimonials() {
     const topHalf = topTrack.scrollWidth / 2;
     const bottomHalf = bottomTrack.scrollWidth / 2;
 
+    const isMobile = window.matchMedia("(max-width: 768px)").matches;
+    const speed = isMobile ? 60 : 40;
+
     const ctx = gsap.context(() => {
       // Top row: moves left
       gsap.set(topTrack, { x: 0 });
       gsap.to(topTrack, {
         x: -topHalf,
-        duration: 40,
+        duration: speed,
         ease: "none",
         repeat: -1,
       });
@@ -163,7 +166,7 @@ export default function Testimonials() {
       gsap.set(bottomTrack, { x: -bottomHalf });
       gsap.to(bottomTrack, {
         x: 0,
-        duration: 40,
+        duration: speed,
         ease: "none",
         repeat: -1,
       });

@@ -146,6 +146,8 @@ export default function About() {
         const paraDelay = 0.8;
         [para1Ref, para2Ref].forEach((ref, pi) => {
           if (!ref.current) return;
+          ref.current.style.opacity = "1";
+          ref.current.style.transform = "none";
           const lineEls = splitLines(ref.current);
           tl.to(
             lineEls,

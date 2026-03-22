@@ -106,7 +106,7 @@ export default function Process() {
         />
 
         <div className="relative z-10 px-6 md:px-16 text-right">
-          <h2 className="font-heading text-[3.5rem] md:text-[7rem] lg:text-[9rem] leading-[0.85]" style={{ color: '#599887' }}>
+          <h2 className="font-heading text-[3.5rem] md:text-[7rem] lg:text-[9rem] leading-[0.85]" style={{ color: '#bcc1a1' }}>
             The Process
           </h2>
         </div>

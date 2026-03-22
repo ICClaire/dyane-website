@@ -81,7 +81,7 @@ function InstagramButton() {
       onMouseLeave={(e) => { handleLeave(e); handleMoveLeave(); }}
       onMouseMove={handleMove}
       className="relative inline-flex items-center gap-3 px-10 py-4 rounded-full overflow-hidden cursor-pointer"
-      style={{ willChange: "transform", background: "#599887" }}
+      style={{ willChange: "transform", background: "#bcc1a1" }}
     >
       <span
         ref={fillRef}
@@ -210,7 +210,7 @@ export default function Works() {
       <DrawSVG
         src="/two-flower.svg"
         className="absolute pointer-events-none select-none"
-        style={{ width: "clamp(280px, 50vw, 700px)", right: -120, bottom: -200, top: "auto", opacity: 0.55, transform: "scaleX(-1)", zIndex: 0 }}
+        style={{ width: "clamp(280px, 50vw, 700px)", right: -120, bottom: -60, top: "auto", opacity: 0.55, transform: "scaleX(-1)", zIndex: 0 }}
         svgStyle="width:100%;height:auto;display:block;"
         triggerOnView
         delayPerStroke={30}
