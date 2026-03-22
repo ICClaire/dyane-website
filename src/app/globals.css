@@ -92,6 +92,18 @@ h1, h2, h3, h4, h5, h6 {
 .anim-float      { animation: floatY    5s ease-in-out infinite; }
 
 
+/* Mobile hero: show everything instantly, no JS delay */
+@media (max-width: 768px) {
+  .hero-blob,
+  .hero-rule-line,
+  .hero-diamond,
+  .hero-subtitle,
+  .hero-cta,
+  .hero-scroll {
+    opacity: 1 !important;
+  }
+}
+
 /* Smooth scrollbar (WebKit/Blink) */
 ::-webkit-scrollbar {
   width: 6px;

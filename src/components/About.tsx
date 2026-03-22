@@ -1,30 +1,163 @@
 "use client";
 import { useEffect, useRef } from "react";
-import { FloralDivider, SmallLeaf } from "./FlowerDecor";
+import { gsap } from "gsap";
+import { SmallLeaf } from "./FlowerDecor";
 import DrawSVG from "./DrawSVG";
 import PhotoFlip from "./PhotoFlip";
 
+/* ── helper: wrap every character in a span ── */
+function splitChars(el: HTMLElement) {
+  const text = el.textContent ?? "";
+  el.innerHTML = "";
+  text.split("").forEach((ch) => {
+    const span = document.createElement("span");
+    span.style.display = "inline-block";
+    span.style.opacity = "0";
+    span.style.transform = "translateY(40px) rotate(8deg)";
+    span.textContent = ch === " " ? "\u00A0" : ch;
+    el.appendChild(span);
+  });
+  return el.querySelectorAll<HTMLSpanElement>("span");
+}
+
+/* ── helper: wrap each line in a clip container ── */
+function splitLines(el: HTMLElement) {
+  const text = el.innerHTML;
+  // Wrap content in a measurer to detect line breaks
+  el.style.position = "relative";
+  const words = text.split(/\s+/);
+  el.innerHTML = words.map((w) => `<span class="about-word" style="display:inline">${w}</span>`).join(" ");
+
+  const wordEls = el.querySelectorAll<HTMLSpanElement>(".about-word");
+  const lines: HTMLSpanElement[][] = [];
+  let currentLine: HTMLSpanElement[] = [];
+  let lastTop = -1;
+
+  wordEls.forEach((w) => {
+    const top = w.getBoundingClientRect().top;
+    if (lastTop !== -1 && Math.abs(top - lastTop) > 4) {
+      lines.push(currentLine);
+      currentLine = [];
+    }
+    currentLine.push(w);
+    lastTop = top;
+  });
+  if (currentLine.length) lines.push(currentLine);
+
+  // Rebuild with line wrappers
+  el.innerHTML = "";
+  const lineEls: HTMLDivElement[] = [];
+  lines.forEach((lineWords) => {
+    const clipper = document.createElement("div");
+    clipper.style.overflow = "hidden";
+    clipper.style.position = "relative";
+
+    const inner = document.createElement("div");
+    inner.style.transform = "translateY(100%)";
+    inner.style.opacity = "0";
+    inner.textContent = lineWords.map((w) => w.textContent).join(" ");
+
+    clipper.appendChild(inner);
+    el.appendChild(clipper);
+    lineEls.push(inner);
+  });
+
+  return lineEls;
+}
+
 export default function About() {
-  const imageRef = useRef<HTMLDivElement>(null);
-  const textRef  = useRef<HTMLDivElement>(null);
-  const tagRefs  = useRef<(HTMLSpanElement | null)[]>([]);
+  const imageRef   = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
+  const headingRef = useRef<HTMLHeadingElement>(null);
+  const labelRef   = useRef<HTMLParagraphElement>(null);
+  const para1Ref   = useRef<HTMLParagraphElement>(null);
+  const para2Ref   = useRef<HTMLParagraphElement>(null);
+  const statsRef   = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return;
+
+    let triggered = false;
+
     const obs = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            (entry.target as HTMLElement).style.opacity = "1";
-            (entry.target as HTMLElement).style.transform = "none";
-            obs.unobserve(entry.target);
-          }
+      ([entry]) => {
+        if (!entry.isIntersecting || triggered) return;
+        triggered = true;
+        obs.disconnect();
+
+        const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+
+        /* ── Image slide in ── */
+        if (imageRef.current) {
+          tl.fromTo(
+            imageRef.current,
+            { opacity: 0, x: -60 },
+            { opacity: 1, x: 0, duration: 1 },
+            0
+          );
+        }
+
+        /* ── "About Me" label ── */
+        if (labelRef.current) {
+          tl.fromTo(
+            labelRef.current,
+            { opacity: 0, y: 12 },
+            { opacity: 1, y: 0, duration: 0.6 },
+            0.2
+          );
+        }
+
+        /* ── Heading: fade + slide up ── */
+        if (headingRef.current) {
+          tl.fromTo(
+            headingRef.current,
+            { opacity: 0, y: 30 },
+            { opacity: 1, y: 0, duration: 0.8 },
+            0.35
+          );
+        }
+
+        /* ── Paragraphs: line-by-line clip reveal ── */
+        const paraDelay = 0.8;
+        [para1Ref, para2Ref].forEach((ref, pi) => {
+          if (!ref.current) return;
+          const lineEls = splitLines(ref.current);
+          tl.to(
+            lineEls,
+            {
+              y: 0,
+              opacity: 1,
+              duration: 0.7,
+              stagger: 0.08,
+              ease: "power2.out",
+            },
+            paraDelay + pi * 0.3
+          );
         });
+
+        /* ── Stats: bounce up ── */
+        if (statsRef.current) {
+          const statItems = statsRef.current.children;
+          tl.fromTo(
+            statItems,
+            { opacity: 0, y: 30, scale: 0.9 },
+            {
+              opacity: 1,
+              y: 0,
+              scale: 1,
+              duration: 0.7,
+              stagger: 0.12,
+              ease: "back.out(2)",
+            },
+            1.3
+          );
+        }
       },
       { threshold: 0.15 }
     );
-    if (imageRef.current) obs.observe(imageRef.current);
-    if (textRef.current)  obs.observe(textRef.current);
-    tagRefs.current.forEach((el) => el && obs.observe(el));
+
+    obs.observe(section);
     return () => obs.disconnect();
   }, []);
 
@@ -35,18 +168,14 @@ export default function About() {
   ];
 
   return (
-    <section id="about" className="py-28 bg-parchment/50 relative overflow-hidden">
+    <section ref={sectionRef} id="about" className="py-28 bg-parchment/50 relative overflow-hidden">
       <div className="max-w-6xl mx-auto px-6">
         <div className="grid md:grid-cols-2 gap-16 items-center">
 
           {/* Image side */}
           <div
             ref={imageRef}
-            style={{
-              opacity: 0,
-              transform: "translateX(-50px)",
-              transition: "opacity 0.95s cubic-bezier(.22,1,.36,1), transform 0.95s cubic-bezier(.22,1,.36,1)",
-            }}
+            style={{ opacity: 0 }}
             className="relative z-[2] flex items-center justify-center"
           >
             <PhotoFlip />
@@ -54,45 +183,31 @@ export default function About() {
           </div>
 
           {/* Text side */}
-          <div
-            ref={textRef}
-            style={{
-              opacity: 0,
-              transform: "translateX(50px)",
-              transition: "opacity 0.95s cubic-bezier(.22,1,.36,1) 150ms, transform 0.95s cubic-bezier(.22,1,.36,1) 150ms",
-            }}
-            className="flex flex-col"
-          >
-            <p className="text-xs tracking-[0.3em] uppercase text-bark/50 mb-4">About Me</p>
+          <div className="flex flex-col">
+            <p ref={labelRef} className="text-xs tracking-[0.3em] uppercase text-bark/50 mb-4" style={{ opacity: 0 }}>
+              About Me
+            </p>
 
-            <h2 className="font-heading text-5xl md:text-6xl text-bark leading-tight mb-6">
+            <h2 ref={headingRef} className="font-heading text-5xl md:text-6xl text-bark leading-tight mb-6">
               Hello, I&rsquo;m Dyane.
             </h2>
 
             <div className="space-y-4 text-lg font-medium text-bark-light leading-relaxed">
-              <p>
+              <p ref={para1Ref}>
                 Fine-line tattoo artist based in Fleetwood, B.C. at Ink House.
                 Every piece is sketched from scratch. No templates, no flash. Just
                 art made specifically for you, your body, and your story.
               </p>
-              <p>
+              <p ref={para2Ref}>
                 My sessions are calm, collaborative, and treated like a baptism
                 moment. Something sacred, meaningful, and entirely your own.
               </p>
             </div>
 
             {/* Stats */}
-            <div className="flex gap-8 mt-10">
-              {stats.map((stat, i) => (
-                <div
-                  key={stat.label}
-                  ref={(el) => { tagRefs.current[i] = el; }}
-                  style={{
-                    opacity: 0,
-                    transform: "translateY(16px)",
-                    transition: `opacity 0.6s ease ${300 + i * 100}ms, transform 0.6s ease ${300 + i * 100}ms`,
-                  }}
-                >
+            <div ref={statsRef} className="flex gap-8 mt-10">
+              {stats.map((stat) => (
+                <div key={stat.label} style={{ opacity: 0 }}>
                   <p className="text-2xl font-semibold text-bark">{stat.value}</p>
                   <p className="text-xs tracking-wider uppercase text-bark-light/50 mt-1">{stat.label}</p>
                 </div>

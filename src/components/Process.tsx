@@ -10,6 +10,7 @@ const steps = [
     desc: "Slide into my Instagram DMs (@chan.inkedd) with a reference photo, ideally something from my previous work that resonates with you. The more detail you include upfront, the smoother everything flows.",
     bg: "#F0EAD8",
     img: "/tattoos/reach-out.jpg",
+    noOverlay: true,
   },
   {
     num: "02",
@@ -18,6 +19,7 @@ const steps = [
     desc: "I'll send over a quick questionnaire: name, pronouns, placement, size, colour preferences, design description, preferred date, and any skin conditions I should know. Once that's filled out, the specifics get ironed out from there.",
     bg: "#FAF8F2",
     img: "/tattoos/consultation.jpg",
+    noOverlay: true,
   },
   {
     num: "03",
@@ -26,6 +28,7 @@ const steps = [
     desc: "I take your ideas, brainstorm with you, and bring them to life by sketching draft by draft until it's perfect. No templates. Every piece is drawn from scratch and made entirely for you.",
     bg: "#FBF0EE",
     img: "/tattoos/custom-design.jpg",
+    noOverlay: true,
   },
   {
     num: "04",
@@ -48,9 +51,12 @@ export default function Process() {
     const updateLayout = () => {
       if (!containerRef.current) return;
       const isMob = mobile();
-      // Mobile: shorter scroll per card so sticky kicks in sooner
       const mult = isMob ? 45 : 100;
-      containerRef.current.style.height = `${(steps.length + 0.3) * mult}vh`;
+      // Mobile: need (n-1)*step + 100vh so the last card stays pinned
+      const containerVh = isMob
+        ? (steps.length - 1) * mult + 100
+        : (steps.length + 0.3) * mult;
+      containerRef.current.style.height = `${containerVh}vh`;
 
       // Position cards: centered on mobile (20vh for 60vh card), top-aligned on desktop
       cardRefs.current.forEach((card, i) => {
@@ -100,7 +106,7 @@ export default function Process() {
         />
 
         <div className="relative z-10 px-6 md:px-16 text-right">
-          <h2 className="font-heading text-[3.5rem] md:text-[7rem] lg:text-[9rem] leading-[0.85] text-bark">
+          <h2 className="font-heading text-[3.5rem] md:text-[7rem] lg:text-[9rem] leading-[0.85]" style={{ color: '#599887' }}>
             The Process
           </h2>
         </div>
@@ -131,7 +137,7 @@ export default function Process() {
                 <img
                   src={step.img}
                   alt={step.title}
-                  className="absolute inset-0 w-full h-full object-cover"
+                  className="absolute inset-0 w-full h-full object-cover object-center"
                 />
                 {!step.noOverlay && (
                   <>
@@ -150,27 +156,24 @@ export default function Process() {
               </div>
 
               {/* Bottom / Right: content */}
-              <div className="flex flex-col justify-center md:justify-between px-4 py-3 md:p-14 relative z-10" style={{ flex: "1 1 auto" }}>
-                {/* Ghost number */}
-                <span
-                  className="absolute -bottom-4 md:-bottom-12 right-4 md:right-6 font-heading text-[40vw] md:text-[30vw] leading-none select-none pointer-events-none text-rose/[0.05]"
-                  style={{ lineHeight: 1 }}
-                >
-                  {step.num}
+              <div className="flex flex-col justify-center px-4 py-3 md:px-16 md:py-0 relative z-10 h-full" style={{ flex: "1 1 auto" }}>
+                {/* Num label */}
+                <span className="hidden md:block text-xs tracking-[0.3em] uppercase text-bark/40 mb-4">
+                  Step {step.num}
                 </span>
 
                 {/* Title + desc */}
                 <div className="text-center md:text-left">
-                  <h3 className="font-heading text-[clamp(2rem,8vw,5rem)] text-bark leading-[0.9] mb-3 md:mb-6">
+                  <h3 className="font-heading text-[clamp(2rem,8vw,5rem)] text-bark leading-[0.9] mb-4 md:mb-6">
                     {step.title}
                   </h3>
-                  <p className="font-body text-bark-light/60 text-sm md:text-base leading-snug md:leading-relaxed line-clamp-4 md:line-clamp-none">
+                  <p className="font-body text-bark/80 text-base md:text-lg leading-relaxed line-clamp-4 md:line-clamp-none max-w-md">
                     {step.desc}
                   </p>
                 </div>
 
                 {/* Floral divider — desktop only */}
-                <FloralDivider className="hidden md:block w-28 opacity-30" />
+                <FloralDivider className="hidden md:block w-28 opacity-30 mt-8" />
               </div>
 
             </div>

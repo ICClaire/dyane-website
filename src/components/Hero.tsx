@@ -1,6 +1,5 @@
 "use client";
 import { useEffect, useRef } from "react";
-import { SmallFlower } from "./FlowerDecor";
 import { HeroTitle } from "./HeroTitle";
 import gsap from "gsap";
 
@@ -8,18 +7,9 @@ export default function Hero() {
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
+    // Mobile: CSS handles visibility (no animation). Desktop: run GSAP.
     const isMobile = window.matchMedia("(max-width: 768px)").matches;
-
-    if (isMobile) {
-      // No animation on mobile — show everything immediately
-      const els = sectionRef.current?.querySelectorAll(
-        ".hero-blob, .hero-flower, .hero-rule-line, .hero-diamond, .hero-subtitle, .hero-cta, .hero-scroll"
-      );
-      els?.forEach((el) => {
-        (el as HTMLElement).style.opacity = "1";
-      });
-      return;
-    }
+    if (isMobile) return;
 
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({ delay: 0.15 });
@@ -29,13 +19,6 @@ export default function Hero() {
         { scale: 0.3, opacity: 0 },
         { scale: 1, opacity: 1, duration: 2.4, stagger: 0.3, ease: "power2.out" },
         0
-      );
-
-      tl.fromTo(
-        ".hero-flower",
-        { scale: 0, rotation: -150, opacity: 0 },
-        { scale: 1, rotation: 0, opacity: 0.6, duration: 1.2, ease: "back.out(1.4)" },
-        0.6
       );
 
       tl.fromTo(
@@ -96,11 +79,6 @@ export default function Hero() {
       <div className="hero-blob absolute top-0 left-0 w-96 h-96 rounded-full bg-blush/30 blur-3xl -translate-x-1/2 -translate-y-1/4 pointer-events-none" />
       <div className="hero-blob absolute bottom-0 right-0 w-80 h-80 rounded-full bg-sage-pale/40 blur-3xl translate-x-1/3 translate-y-1/4 pointer-events-none" />
       <div className="hero-blob absolute top-1/3 right-1/4 w-64 h-64 rounded-full bg-mint/20 blur-3xl pointer-events-none" />
-
-      {/* Small flower top center */}
-      <div className="hero-flower absolute top-56" style={{ opacity: 0 }}>
-        <SmallFlower className="w-8 h-8" />
-      </div>
 
       {/* Main content */}
       <div className="relative z-10 flex flex-col items-center text-center px-6 max-w-3xl">

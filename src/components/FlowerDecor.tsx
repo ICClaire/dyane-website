@@ -77,32 +77,6 @@ export function BranchRight({ className = "" }: { className?: string }) {
   );
 }
 
-export function SmallFlower({ className = "" }: { className?: string }) {
-  return (
-    <svg
-      viewBox="0 0 60 60"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      className={className}
-    >
-      {[0, 45, 90, 135, 180, 225, 270, 315].map((angle, i) => (
-        <ellipse
-          key={i}
-          cx="30"
-          cy="30"
-          rx="5"
-          ry="11"
-          fill="#F4D5D5"
-          fillOpacity="0.75"
-          transform={`rotate(${angle} 30 30) translate(0 -10)`}
-        />
-      ))}
-      <circle cx="30" cy="30" r="6" fill="#E8B8B8" fillOpacity="0.9" />
-      <circle cx="30" cy="30" r="3" fill="#BF8090" fillOpacity="0.7" />
-    </svg>
-  );
-}
-
 export function FloralDivider({ className = "" }: { className?: string }) {
   return (
     <svg
