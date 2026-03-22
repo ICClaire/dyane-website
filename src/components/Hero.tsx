@@ -74,7 +74,7 @@ export default function Hero() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="relative min-h-[70vh] md:min-h-screen flex flex-col items-center justify-center overflow-hidden bg-parchment/50 pt-28 md:pt-40 pb-12 md:pb-0">
+    <section ref={sectionRef} className="relative min-h-[70svh] md:min-h-screen flex flex-col items-center justify-center overflow-hidden bg-parchment/50 pt-28 md:pt-40 pb-12 md:pb-0">
       {/* Soft gradient blobs */}
       <div className="hero-blob absolute top-0 left-0 w-96 h-96 rounded-full bg-blush/30 blur-3xl -translate-x-1/2 -translate-y-1/4 pointer-events-none md:opacity-0" />
       <div className="hero-blob absolute bottom-0 right-0 w-80 h-80 rounded-full bg-sage-pale/40 blur-3xl translate-x-1/3 translate-y-1/4 pointer-events-none md:opacity-0" />

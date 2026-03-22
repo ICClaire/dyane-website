@@ -127,7 +127,7 @@ export default function Process() {
               transformOrigin: "top center",
               backgroundColor: step.bg,
             }}
-            className="mx-4 md:mx-32 lg:mx-48 rounded-2xl md:rounded-3xl overflow-hidden shadow-xl h-[60vh] md:h-[80vh]"
+            className="mx-4 md:mx-32 lg:mx-48 rounded-2xl md:rounded-3xl overflow-hidden shadow-xl h-[60svh] md:h-[80vh]"
           >
             <div className="h-full flex flex-col md:grid md:grid-cols-2 relative overflow-hidden">
 

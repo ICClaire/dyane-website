@@ -33,6 +33,14 @@ html {
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
+  /* Prevent layout shifts from WebView/mobile browser bar resizing */
+  overflow-anchor: auto;
+}
+
+@supports (height: 100svh) {
+  :root {
+    --vh-unit: 1svh;
+  }
 }
 
 body {
