@@ -80,11 +80,35 @@ export default function About() {
 
     let triggered = false;
 
+    const isMobile = window.matchMedia("(max-width: 768px)").matches;
+
     const obs = new IntersectionObserver(
       ([entry]) => {
         if (!entry.isIntersecting || triggered) return;
         triggered = true;
         obs.disconnect();
+
+        if (isMobile) {
+          // Mobile: simple fade-in, no heavy DOM splitting
+          [imageRef, labelRef, headingRef, para1Ref, para2Ref].forEach((ref) => {
+            if (ref.current) {
+              ref.current.style.transition = "opacity 0.6s ease, transform 0.6s ease";
+              ref.current.style.opacity = "1";
+              ref.current.style.transform = "none";
+            }
+          });
+          if (statsRef.current) {
+            Array.from(statsRef.current.children).forEach((child, i) => {
+              const el = child as HTMLElement;
+              setTimeout(() => {
+                el.style.transition = "opacity 0.5s ease, transform 0.5s ease";
+                el.style.opacity = "1";
+                el.style.transform = "none";
+              }, i * 80);
+            });
+          }
+          return;
+        }
 
         const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
 
@@ -175,7 +199,7 @@ export default function About() {
           {/* Image side */}
           <div
             ref={imageRef}
-            style={{ opacity: 0 }}
+            style={{ opacity: 0, transform: "translateY(20px)" }}
             className="relative z-[2] flex items-center justify-center"
           >
             <PhotoFlip />
@@ -184,21 +208,21 @@ export default function About() {
 
           {/* Text side */}
           <div className="flex flex-col">
-            <p ref={labelRef} className="text-xs tracking-[0.3em] uppercase text-bark/50 mb-4" style={{ opacity: 0 }}>
+            <p ref={labelRef} className="text-xs tracking-[0.3em] uppercase text-bark/50 mb-4" style={{ opacity: 0, transform: "translateY(12px)" }}>
               About Me
             </p>
 
-            <h2 ref={headingRef} className="font-heading text-5xl md:text-6xl text-bark leading-tight mb-6">
+            <h2 ref={headingRef} className="font-heading text-5xl md:text-6xl text-bark leading-tight mb-6" style={{ opacity: 0, transform: "translateY(20px)" }}>
               Hello, I&rsquo;m Dyane.
             </h2>
 
             <div className="space-y-4 text-lg font-medium text-bark-light leading-relaxed">
-              <p ref={para1Ref}>
+              <p ref={para1Ref} style={{ opacity: 0, transform: "translateY(16px)" }}>
                 Fine-line tattoo artist based in Fleetwood, B.C. at Ink House.
                 Every piece is sketched from scratch. No templates, no flash. Just
                 art made specifically for you, your body, and your story.
               </p>
-              <p ref={para2Ref}>
+              <p ref={para2Ref} style={{ opacity: 0, transform: "translateY(16px)" }}>
                 My sessions are calm, collaborative, and treated like a baptism
                 moment. Something sacred, meaningful, and entirely your own.
               </p>
@@ -207,7 +231,7 @@ export default function About() {
             {/* Stats */}
             <div ref={statsRef} className="flex gap-8 mt-10">
               {stats.map((stat) => (
-                <div key={stat.label} style={{ opacity: 0 }}>
+                <div key={stat.label} style={{ opacity: 0, transform: "translateY(16px)" }}>
                   <p className="text-2xl font-semibold text-bark">{stat.value}</p>
                   <p className="text-xs tracking-wider uppercase text-bark-light/50 mt-1">{stat.label}</p>
                 </div>

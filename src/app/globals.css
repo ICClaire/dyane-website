@@ -48,6 +48,16 @@ a, button {
   touch-action: manipulation;
 }
 
+/* Hero SVG title: visible immediately on mobile, hidden on desktop until JS */
+.hero-title-svg {
+  visibility: visible;
+}
+@media (min-width: 769px) {
+  .hero-title-svg:not(.gsap-ready) {
+    visibility: hidden;
+  }
+}
+
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-cormorant), serif;
   transform: skewX(-7deg);
