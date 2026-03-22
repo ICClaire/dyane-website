@@ -1,7 +1,10 @@
 "use client";
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SmallLeaf } from "./FlowerDecor";
+
+gsap.registerPlugin(ScrollTrigger);
 import DrawSVG from "./DrawSVG";
 import PhotoFlip from "./PhotoFlip";
 
@@ -188,7 +191,28 @@ export default function About() {
     );
 
     obs.observe(section);
-    return () => obs.disconnect();
+
+    /* ── Sparkle entrance animation ── */
+    const sparkles = section.querySelectorAll<HTMLElement>(".about-sparkle");
+    gsap.set(sparkles, { autoAlpha: 0, scale: 0, rotation: -45 });
+    gsap.to(sparkles, {
+      autoAlpha: 1,
+      scale: 1,
+      rotation: 0,
+      duration: 0.8,
+      ease: "back.out(1.7)",
+      stagger: 0.12,
+      scrollTrigger: {
+        trigger: section,
+        start: "top 80%",
+        toggleActions: "play none none reverse",
+      },
+    });
+
+    return () => {
+      obs.disconnect();
+      ScrollTrigger.getAll().forEach(t => t.kill());
+    };
   }, []);
 
   const stats = [
@@ -218,9 +242,52 @@ export default function About() {
               About Me
             </p>
 
-            <h2 ref={headingRef} className="font-heading text-[2.8rem] md:text-6xl text-bark leading-tight mb-6 whitespace-nowrap" style={{ opacity: 0, transform: "translateY(20px)" }}>
-              Hello, I&rsquo;m Dyane.
-            </h2>
+            <div className="relative inline-block mb-6">
+              {/* Top: medium sparkle */}
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/sparkle/sparkle.svg"
+                alt=""
+                className="about-sparkle absolute pointer-events-none w-5 md:w-8"
+                style={{ top: "-20%", right: "20%" }}
+              />
+              {/* Small outline sparkle */}
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/sparkle/outline-sparkle.svg"
+                alt=""
+                className="about-sparkle absolute pointer-events-none w-1.5 md:w-3"
+                style={{ top: "-8%", right: "14%" }}
+              />
+              {/* Tiny dot */}
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/sparkle/full-sparkle.svg"
+                alt=""
+                className="about-sparkle absolute pointer-events-none w-1 md:w-1.5"
+                style={{ top: "5%", right: "12%" }}
+              />
+              {/* Bottom: smaller sparkle */}
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/sparkle/sparkle.svg"
+                alt=""
+                className="about-sparkle absolute pointer-events-none w-4 md:w-6"
+                style={{ bottom: "-15%", right: "10%" }}
+              />
+              {/* Tiny dot near bottom sparkle */}
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/sparkle/full-sparkle.svg"
+                alt=""
+                className="about-sparkle absolute pointer-events-none w-1 md:w-1.5"
+                style={{ bottom: "-5%", right: "16%" }}
+              />
+
+              <h2 ref={headingRef} className="font-heading text-[2.8rem] md:text-6xl text-bark leading-tight whitespace-nowrap" style={{ opacity: 0, transform: "translateY(20px)" }}>
+                Hello, I&rsquo;m Dyane.
+              </h2>
+            </div>
 
             <div className="space-y-4 text-lg font-medium text-bark-light leading-relaxed">
               <p ref={para1Ref} style={{ opacity: 0, transform: "translateY(16px)" }}>

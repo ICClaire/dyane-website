@@ -1,6 +1,11 @@
 "use client";
 import { useEffect, useRef } from "react";
 import { FloralDivider } from "./FlowerDecor";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
+
 
 const steps = [
   {
@@ -44,6 +49,32 @@ const steps = [
 export default function Process() {
   const containerRef = useRef<HTMLDivElement>(null);
   const cardRefs     = useRef<(HTMLDivElement | null)[]>([]);
+  const headerRef    = useRef<HTMLDivElement>(null);
+
+  /* ── GSAP sparkle entrance ── */
+  useEffect(() => {
+    if (!headerRef.current) return;
+    const sparkles = headerRef.current.querySelectorAll<HTMLElement>(".sparkle-item");
+    const ctx = gsap.context(() => {
+      gsap.set(sparkles, { autoAlpha: 0, scale: 0, rotation: -45 });
+
+      gsap.to(sparkles, {
+        autoAlpha: 1,
+        scale: 1,
+        rotation: 0,
+        duration: 0.8,
+        ease: "back.out(1.7)",
+        stagger: 0.12,
+        scrollTrigger: {
+          trigger: headerRef.current,
+          start: "top 85%",
+          toggleActions: "play none none reverse",
+        },
+      });
+    }, headerRef);
+
+    return () => ctx.revert();
+  }, []);
 
   useEffect(() => {
     const mobile = () => window.innerWidth < 768;
@@ -97,18 +128,65 @@ export default function Process() {
     <section id="process">
 
       {/* ── Header ── */}
-      <div className="relative bg-parchment/50 overflow-hidden pt-28 pb-20 md:pt-36 md:pb-28">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src="/one-flower-pink.png"
-          alt=""
-          className="absolute top-1/2 -translate-y-1/2 -left-24 w-48 md:w-96 h-auto opacity-40 pointer-events-none select-none"
-        />
+      <div ref={headerRef} className="relative bg-parchment/50 pt-28 pb-20 md:pt-36 md:pb-28">
+        {/* Flower — clipped separately */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/one-flower-pink.png"
+            alt=""
+            className="absolute top-1/2 -translate-y-1/2 -left-24 w-48 md:w-96 h-auto opacity-40 select-none"
+          />
+        </div>
 
         <div className="relative z-10 px-6 md:px-16 text-right">
-          <h2 className="font-heading text-[3.5rem] md:text-[7rem] lg:text-[9rem] leading-[0.85]" style={{ color: '#bcc1a1' }}>
-            The Process
-          </h2>
+          {/* ── Sparkles around title ── */}
+          <div className="relative inline-block">
+            {/* LEFT: small outline-sparkle (bottom-left) */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/sparkle/outline-sparkle.svg"
+              alt=""
+              className="sparkle-item absolute pointer-events-none w-2 md:w-4"
+              style={{ bottom: "-10%", left: "-10%" }}
+            />
+            {/* LEFT: medium sparkle.svg (mid-left, above outline) */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/sparkle/twinkle-sparkle.svg"
+              alt=""
+              className="sparkle-item absolute pointer-events-none w-10 md:w-18"
+              style={{ top: "0%", left: "-12%" }}
+            />
+            {/* RIGHT: medium sparkle (top-right) */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/sparkle/sparkle.svg"
+              alt=""
+              className="sparkle-item absolute pointer-events-none w-9 md:w-18"
+              style={{ top: "-30%", right: "10%" }}
+            />
+            {/* RIGHT: outline-sparkle above the dot */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/sparkle/outline-sparkle.svg"
+              alt=""
+              className="sparkle-item absolute pointer-events-none w-1 md:w-3"
+              style={{ top: "-22%", right: "2%" }}
+            />
+            {/* RIGHT: tiny full-sparkle dot */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/sparkle/full-sparkle.svg"
+              alt=""
+              className="sparkle-item absolute pointer-events-none w-1 md:w-2"
+              style={{ top: "-10%", right: "7%" }}
+            />
+
+            <h2 className="font-heading text-[3.5rem] md:text-[7rem] lg:text-[9rem] leading-[0.85]" style={{ color: '#bcc1a1' }}>
+              The Process
+            </h2>
+          </div>
         </div>
       </div>
 
