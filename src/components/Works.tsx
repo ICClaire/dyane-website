@@ -206,10 +206,10 @@ export default function Works() {
         </div>
       </div>
 
-      {/* Two-flower decoration */}
+      {/* Two-flower decoration — desktop only */}
       <DrawSVG
         src="/two-flower.svg"
-        className="absolute pointer-events-none select-none"
+        className="absolute pointer-events-none select-none hidden md:block"
         style={{ width: "clamp(280px, 50vw, 700px)", right: -120, bottom: -60, top: "auto", opacity: 0.55, transform: "scaleX(-1)", zIndex: 0 }}
         svgStyle="width:100%;height:auto;display:block;"
         triggerOnView
@@ -217,7 +217,7 @@ export default function Works() {
       />
 
       {/* Mobile two-column parallax */}
-      <div className="md:hidden flex gap-3 px-4 pb-16">
+      <div className="md:hidden flex gap-3 px-4">
         {/* Left column — slower */}
         <div
           ref={mobileLeftRef}
@@ -246,6 +246,30 @@ export default function Works() {
             </div>
           ))}
         </div>
+      </div>
+
+      {/* Mobile CTA + flowers */}
+      <div className="md:hidden relative py-16 flex flex-col items-center">
+        <DrawSVG
+          src="/two-flower.svg"
+          className="absolute pointer-events-none select-none left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+          style={{ width: 240, opacity: 0.3, zIndex: 0 }}
+          svgStyle="width:100%;height:auto;display:block;"
+          triggerOnView
+          delayPerStroke={30}
+        />
+        <a
+          href="https://www.instagram.com/chan.inkedd/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="relative z-10 inline-flex items-center gap-3 px-8 py-3.5 rounded-full text-cream text-xs tracking-[0.18em] uppercase font-medium"
+          style={{ backgroundColor: "#bcc1a1" }}
+        >
+          <span>See more on Instagram</span>
+          <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+            <path d="M5 12h14M12 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </a>
       </div>
 
       {/* Desktop floating photos */}

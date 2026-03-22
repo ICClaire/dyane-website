@@ -7,7 +7,7 @@ const steps = [
     num: "01",
     title: "Reach Out",
     tag: "Getting Started",
-    desc: "Slide into my Instagram DMs (@chan.inkedd) with a reference photo, ideally something from my previous work that resonates with you. The more detail you include upfront, the smoother everything flows.",
+    desc: "DM me on Instagram (@chan.inkedd) with a reference photo, something from my work that speaks to you. The more detail upfront, the smoother it flows.",
     bg: "#F0EAD8",
     img: "/tattoos/reach-out.jpg",
     noOverlay: true,
@@ -16,7 +16,7 @@ const steps = [
     num: "02",
     title: "Consultation",
     tag: "Let's Connect",
-    desc: "I'll send over a quick questionnaire: name, pronouns, placement, size, colour preferences, design description, preferred date, and any skin conditions I should know. Once that's filled out, the specifics get ironed out from there.",
+    desc: "I'll send a quick questionnaire. Placement, size, colour, design ideas, and preferred date. Once filled out, we iron out the details together.",
     bg: "#FAF8F2",
     img: "/tattoos/consultation.jpg",
     noOverlay: true,
@@ -25,7 +25,7 @@ const steps = [
     num: "03",
     title: "Custom Design",
     tag: "The Art",
-    desc: "I take your ideas, brainstorm with you, and bring them to life by sketching draft by draft until it's perfect. No templates. Every piece is drawn from scratch and made entirely for you.",
+    desc: "Your ideas, sketched draft by draft until it's perfect. No templates, no flash. Every piece is drawn from scratch, entirely for you.",
     bg: "#FBF0EE",
     img: "/tattoos/custom-design.jpg",
     noOverlay: true,
@@ -34,7 +34,7 @@ const steps = [
     num: "04",
     title: "Tattoo Day",
     tag: "Forever",
-    desc: "We review the final stencil together, then make it permanent. I love getting to know everyone, not just why you're getting the tattoo, but who you are. Every session is a baptism moment. This is the good part.",
+    desc: "We review the stencil together, then make it permanent. Every session is a baptism moment. Something sacred and entirely your own.",
     bg: "#F4D5D5",
     img: "/dyane-portrait2.png",
     noOverlay: true,
@@ -132,7 +132,7 @@ export default function Process() {
             <div className="h-full flex flex-col md:grid md:grid-cols-2 relative overflow-hidden">
 
               {/* Top / Left: image */}
-              <div className="relative overflow-hidden md:h-full" style={{ flex: "0 0 55%" }}>
+              <div className="relative overflow-hidden md:h-full" style={{ flex: "0 0 45%" }}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={step.img}
@@ -156,18 +156,18 @@ export default function Process() {
               </div>
 
               {/* Bottom / Right: content */}
-              <div className="flex flex-col justify-center px-4 py-3 md:px-16 md:py-0 relative z-10 h-full" style={{ flex: "1 1 auto" }}>
+              <div className="flex flex-col justify-center px-5 py-4 md:px-16 md:py-0 relative z-10 h-full" style={{ flex: "1 1 auto" }}>
                 {/* Num label */}
-                <span className="hidden md:block text-xs tracking-[0.3em] uppercase text-bark/40 mb-4">
+                <span className="text-[10px] md:text-xs tracking-[0.3em] uppercase text-bark/40 mb-2 md:mb-4">
                   Step {step.num}
                 </span>
 
                 {/* Title + desc */}
                 <div className="text-center md:text-left">
-                  <h3 className="font-heading text-[clamp(2rem,8vw,5rem)] text-bark leading-[0.9] mb-4 md:mb-6">
+                  <h3 className="font-heading text-3xl md:text-[clamp(2rem,8vw,5rem)] text-bark leading-[0.9] mb-2 md:mb-6">
                     {step.title}
                   </h3>
-                  <p className="font-body text-bark/80 text-base md:text-lg leading-relaxed line-clamp-4 md:line-clamp-none max-w-md">
+                  <p className="font-body text-bark/80 text-sm md:text-lg leading-relaxed md:line-clamp-none max-w-md">
                     {step.desc}
                   </p>
                 </div>

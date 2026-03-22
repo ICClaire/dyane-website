@@ -89,8 +89,12 @@ export default function About() {
         obs.disconnect();
 
         if (isMobile) {
-          // Mobile: simple fade-in, no heavy DOM splitting
-          [imageRef, labelRef, headingRef, para1Ref, para2Ref].forEach((ref) => {
+          // Mobile: show image immediately, simple fade-in for text
+          if (imageRef.current) {
+            imageRef.current.style.opacity = "1";
+            imageRef.current.style.transform = "none";
+          }
+          [labelRef, headingRef, para1Ref, para2Ref].forEach((ref) => {
             if (ref.current) {
               ref.current.style.transition = "opacity 0.6s ease, transform 0.6s ease";
               ref.current.style.opacity = "1";

@@ -90,7 +90,7 @@ export default function Navbar() {
 
           <div className="flex items-center gap-3">
             <a
-              href={bookUrl}
+              href="https://www.instagram.com/chan.inkedd/"
               target="_blank"
               rel="noopener noreferrer"
               className="text-[10px] tracking-[0.12em] uppercase px-4 py-2 bg-rose text-cream rounded-full font-semibold"

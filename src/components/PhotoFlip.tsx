@@ -4,12 +4,12 @@ import Image from "next/image";
 
 export default function PhotoFlip() {
   const [isFlipped, setIsFlipped] = useState(false);
-  const [delay, setDelay] = useState(3000);
+  const [delay, setDelay] = useState(2000);
 
   useEffect(() => {
     const timeout = setTimeout(() => {
       setIsFlipped((prev) => !prev);
-      setDelay(8000);
+      setDelay(7000);
     }, delay);
     return () => clearTimeout(timeout);
   }, [isFlipped, delay]);
