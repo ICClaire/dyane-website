@@ -16,41 +16,41 @@ export default function Footer() {
     if (!footer) return;
 
     const ctx = gsap.context(() => {
-      // Flowers drift up
-      gsap.from(".footer-flower-left", {
-        y: 100,
-        opacity: 0,
-        duration: 1.8,
-        ease: "power2.out",
-        scrollTrigger: { trigger: footer, start: "top 85%" },
-      });
-      gsap.from(".footer-flower-right", {
-        y: 100,
-        opacity: 0,
-        duration: 1.8,
-        delay: 0.15,
-        ease: "power2.out",
-        scrollTrigger: { trigger: footer, start: "top 85%" },
-      });
+      const isMobile = window.innerWidth < 640;
+      const st = {
+        trigger: footer,
+        start: "top bottom",
+        end: "bottom top",
+        scrub: true,
+      };
 
-      // Gentle sway
-      gsap.to(".footer-flower-left", {
-        rotate: 1.5,
-        duration: 5,
-        ease: "sine.inOut",
-        repeat: -1,
-        yoyo: true,
-        transformOrigin: "bottom center",
-      });
+      // White — back layer, barely drifts
+      gsap.fromTo(".cloud-white", { y: isMobile ? 30 : 20 }, { y: isMobile ? -10 : -5, ease: "none", scrollTrigger: st });
 
-      // Content reveal
+      // Pink — mid layer
+      gsap.fromTo(".cloud-pink", { y: isMobile ? 320 : 320 }, { y: isMobile ? -280 : -260, ease: "none", scrollTrigger: st });
+
+      // Purple side clouds
+      gsap.fromTo(".cloud-purple-side", { y: isMobile ? 600 : 600 }, { y: isMobile ? -520 : -500, ease: "none", scrollTrigger: st });
+
+      // Purple bottom clouds
+      gsap.fromTo(".cloud-purple-bottom", { y: isMobile ? 600 : 600 }, { y: isMobile ? -520 : -500, ease: "none", scrollTrigger: st });
+
+      // Title parallax — between pink and purple
+      gsap.fromTo(
+        ".footer-title",
+        { y: isMobile ? 120 : 120 },
+        { y: isMobile ? -140 : -140, ease: "none", scrollTrigger: st }
+      );
+
+      // Footer content fade-in
       gsap.from(footer.querySelectorAll(".reveal"), {
         y: 25,
         opacity: 0,
         duration: 0.8,
         ease: "power3.out",
         stagger: 0.08,
-        scrollTrigger: { trigger: footer, start: "top 75%" },
+        scrollTrigger: { trigger: footer, start: "top 80%" },
       });
     }, footer);
 
@@ -61,46 +61,81 @@ export default function Footer() {
     <footer
       ref={footerRef}
       id="contact"
-      className="relative overflow-hidden bg-parchment/50"
+      className="relative bg-parchment/50 overflow-hidden"
+      style={{ minHeight: "clamp(500px, 100vw, 800px)" }}
     >
-      {/* Warm glow from center */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(191,128,144,0.08)_0%,transparent_60%)] pointer-events-none" />
+      {/* ══ LEFT GROUP ══════════════════════════════════════════ */}
 
-      {/* two-flower — left, anchored at bottom */}
+      {/* White — back */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src="/two-flower.svg"
-        alt=""
-        className="footer-flower-left absolute bottom-0 -left-12 sm:left-0 h-[50%] sm:h-[60%] md:h-[70%] w-auto pointer-events-none select-none"
+      <img src="/clouds/1white.svg" alt="" className="cloud-white absolute pointer-events-none select-none w-[500%] sm:w-[65%] top-[20%] sm:top-[22%]"
+        style={{ left: "-18%", zIndex: 1, filter: "saturate(1.8) contrast(1.05)" }} />
+      {/* Pink — mid */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src="/clouds/1pink.svg" alt="" className="cloud-pink absolute pointer-events-none select-none w-[250%] sm:w-[56%] top-[16%] sm:top-[30%]"
+        style={{ left: "-14%", zIndex: 2 }} />
+      {/* Purple — front */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src="/clouds/1purple.svg" alt="" className="cloud-purple-side absolute pointer-events-none select-none w-[400%] sm:w-[80%] bottom-[35%] sm:-bottom-[30%]"
+        style={{ left: "-50%", zIndex: 4 }} />
+
+      {/* ══ RIGHT GROUP (mirrored) ══════════════════════════════ */}
+
+      {/* White — back */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src="/clouds/2white.svg" alt="" className="cloud-white absolute pointer-events-none select-none w-[500%] sm:w-[65%] top-[20%] sm:top-[22%]"
+        style={{ right: "-18%", zIndex: 1, transform: "scaleX(-1)", filter: "saturate(1.8) contrast(1.05)" }} />
+      {/* Pink — mid */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src="/clouds/2 pink.svg" alt="" className="cloud-pink absolute pointer-events-none select-none w-[250%] sm:w-[56%] top-[16%] sm:top-[30%]"
+        style={{ right: "-14%", zIndex: 2, transform: "scaleX(-1)" }} />
+      {/* Purple — front */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src="/clouds/2purple.svg" alt="" className="cloud-purple-side absolute pointer-events-none select-none w-[400%] sm:w-[80%] bottom-[35%] sm:-bottom-[30%]"
+        style={{ right: "-50%", zIndex: 4, transform: "scaleX(-1)" }} />
+
+      {/* ══ BOTTOM PURPLE CLOUDS ════════════════════════════════ */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src="/clouds/1purple.svg" alt="" className="cloud-purple-bottom absolute pointer-events-none select-none w-[150%] sm:w-[60%] bottom-[25%] sm:-bottom-[25%]"
+        style={{ left: "-20%", zIndex: 4 }} />
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src="/clouds/2purple.svg" alt="" className="cloud-purple-bottom absolute pointer-events-none select-none w-[150%] sm:w-[60%] bottom-[25%] sm:-bottom-[25%]"
+        style={{ right: "-20%", zIndex: 4, transform: "scaleX(-1)" }} />
+
+      {/* ══ CLOUD-COLOUR PANEL (below white clouds) ════════════ */}
+      <div
+        className="absolute inset-x-0 bottom-0"
+        style={{ top: "38%", background: "linear-gradient(to bottom, transparent 0%, #FDF7E6 18%)", zIndex: 0 }}
       />
 
-      {/* flower-long — right, anchored at bottom, flipped */}
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src="/flower-long.svg"
-        alt=""
-        className="footer-flower-right absolute bottom-0 -right-10 sm:right-0 h-[55%] sm:h-[65%] md:h-[75%] w-auto pointer-events-none select-none"
-        style={{ transform: "scaleX(-1)" }}
-      />
-
-      {/* Content */}
-      <div className="relative z-10 flex flex-col items-center text-center px-6 pt-28 sm:pt-32 pb-10">
-        {/* Big name */}
-        <h2 className="reveal font-heading text-7xl sm:text-8xl md:text-9xl text-bark leading-none mb-5">
+      {/* ══ BIG TITLE (above clouds) ════════════════════════════ */}
+      <div
+        className="footer-title absolute inset-x-0 flex items-center justify-center pointer-events-none select-none"
+        style={{ top: "38%", zIndex: 3 }}
+      >
+        <h2
+          className="font-heading leading-none text-center whitespace-nowrap"
+          style={{
+            fontSize: "clamp(2.5rem, 22vw, 26rem)",
+            color: "rgb(92,74,58)",
+            letterSpacing: "0",
+          }}
+        >
           chan.inked
         </h2>
+      </div>
 
-        {/* Tagline */}
-        <p className="reveal text-bark/70 text-base sm:text-lg tracking-wide max-w-md leading-relaxed mb-10">
-          Fine line tattoos rooted in botanical beauty and the stories we carry on our skin.
-        </p>
-
+      {/* ══ CONTENT ════════════════════════════════════════════ */}
+      <div
+        className="relative flex flex-col items-center text-center px-6 pb-20"
+        style={{ paddingTop: "max(180px, 43%)", zIndex: 10 }}
+      >
         {/* Book button */}
         <a
           href={BOOKING_URL}
           target="_blank"
           rel="noopener noreferrer"
-          className="reveal group inline-flex items-center gap-2 px-8 py-3.5 rounded-full border border-bark/30 text-bark text-sm tracking-[0.2em] uppercase hover:border-rose/50 hover:text-rose transition-all duration-500"
+          className="reveal group inline-flex items-center gap-2 px-8 py-3.5 rounded-full border-0 sm:border border-bark/30 text-bark text-sm tracking-[0.2em] uppercase hover:border-rose/50 hover:text-rose transition-all duration-500 bg-white sm:bg-transparent mt-36 sm:mt-0"
         >
           <span>Book a Session</span>
           <svg
@@ -114,37 +149,13 @@ export default function Footer() {
           </svg>
         </a>
 
-        {/* Social + location */}
-        <div className="reveal mt-16 flex flex-col sm:flex-row items-center gap-6 sm:gap-10 text-bark/60 text-sm tracking-wider">
-          <a
-            href="https://www.instagram.com/chan.inkedd/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-2 hover:text-rose transition-colors duration-300"
-          >
-            <svg viewBox="0 0 24 24" className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="1.5">
-              <rect x="2" y="2" width="20" height="20" rx="5" />
-              <circle cx="12" cy="12" r="5" />
-              <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
-            </svg>
-            <span>@chan.inkedd</span>
-          </a>
-
-          <span className="hidden sm:block w-1 h-1 rounded-full bg-bark/30" />
-          <span>Fleetwood, B.C.</span>
-          <span className="hidden sm:block w-1 h-1 rounded-full bg-bark/30" />
-
-          <a
-            href="mailto:hello@chan.inked"
-            className="hover:text-rose transition-colors duration-300"
-          >
-            hello@chan.inked
-          </a>
-        </div>
       </div>
 
-      {/* Bottom strip */}
-      <div className="relative z-10 border-t border-bark/15 py-5 flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-6 text-bark/40 text-xs tracking-wider px-6">
+      {/* ══ BOTTOM STRIP ═══════════════════════════════════════ */}
+      <div
+        className="absolute inset-x-0 bottom-0 border-t border-bark/15 py-5 flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-6 text-bark/40 text-xs tracking-wider px-6"
+        style={{ zIndex: 10 }}
+      >
         <span>© {new Date().getFullYear()} chan.inked</span>
         <span className="hidden sm:block">·</span>
         <a
