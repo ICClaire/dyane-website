@@ -15,6 +15,21 @@ export default function Footer() {
     const footer = footerRef.current;
     if (!footer) return;
 
+    /* ── Detect in-app WebViews (Instagram, Facebook, TikTok, etc.) ── */
+    const ua = navigator.userAgent || (navigator as any).vendor || "";
+    const isInAppWebView =
+      /Instagram|FBAN|FBAV|Line\/|Twitter|MicroMessenger|TikTok|Snapchat|Pinterest/i.test(ua);
+
+    if (isInAppWebView) {
+      /* Prevent ScrollTrigger from recalculating on viewport resize caused
+         by the WebView chrome appearing / disappearing */
+      ScrollTrigger.config({ ignoreMobileResize: true });
+
+      /* Force scroll-position tracking via JS touch events instead of native
+         scroll — this fixes inconsistent scroll reporting in WebViews */
+      ScrollTrigger.normalizeScroll(true);
+    }
+
     const ctx = gsap.context(() => {
       const isMobile = window.innerWidth < 640;
       const st = {
@@ -54,7 +69,16 @@ export default function Footer() {
       });
     }, footer);
 
-    return () => ctx.revert();
+    /* WebViews may settle layout after initial paint — refresh positions */
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    if (isInAppWebView) {
+      timer = setTimeout(() => ScrollTrigger.refresh(), 600);
+    }
+
+    return () => {
+      if (timer) clearTimeout(timer);
+      ctx.revert();
+    };
   }, []);
 
   return (
