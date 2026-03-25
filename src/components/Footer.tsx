@@ -5,8 +5,6 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const BOOKING_URL =
-  "https://form.jotform.com/211304498108856?utm_source=ig&utm_medium=social&utm_content=link_in_bio&fbclid=PAZXh0bgNhZW0CMTEAc3J0YwZhcHBfaWQMMjU2MjgxMDQwNTU4AAGnL0VP716BPGocT4es00Yl_uuoMdckS1mTshJx8Uqayk-XrCkdCc6UP_hGLxk_aem_QeuvWN3hCSKCxJHID9HJig";
 
 export default function Footer() {
   const footerRef = useRef<HTMLElement>(null);
@@ -20,14 +18,15 @@ export default function Footer() {
     const isInAppWebView =
       /Instagram|FBAN|FBAV|Line\/|Twitter|MicroMessenger|TikTok|Snapchat|Pinterest/i.test(ua);
 
+    /* In WebViews, skip scroll-driven parallax entirely — place clouds
+       at their midpoint positions statically. Zero JS scroll overhead. */
     if (isInAppWebView) {
-      /* Prevent ScrollTrigger from recalculating on viewport resize caused
-         by the WebView chrome appearing / disappearing */
-      ScrollTrigger.config({ ignoreMobileResize: true });
-
-      /* Force scroll-position tracking via JS touch events instead of native
-         scroll — this fixes inconsistent scroll reporting in WebViews */
-      ScrollTrigger.normalizeScroll(true);
+      gsap.set(".cloud-white",         { y: 10 });
+      gsap.set(".cloud-pink",          { y: 20 });
+      gsap.set(".cloud-purple-side",   { y: 40 });
+      gsap.set(".cloud-purple-bottom", { y: 40 });
+      gsap.set(".footer-title",        { y: -10 });
+      return;
     }
 
     const ctx = gsap.context(() => {
@@ -69,16 +68,7 @@ export default function Footer() {
       });
     }, footer);
 
-    /* WebViews may settle layout after initial paint — refresh positions */
-    let timer: ReturnType<typeof setTimeout> | undefined;
-    if (isInAppWebView) {
-      timer = setTimeout(() => ScrollTrigger.refresh(), 600);
-    }
-
-    return () => {
-      if (timer) clearTimeout(timer);
-      ctx.revert();
-    };
+    return () => ctx.revert();
   }, []);
 
   return (
@@ -149,31 +139,11 @@ export default function Footer() {
         </h2>
       </div>
 
-      {/* ══ CONTENT ════════════════════════════════════════════ */}
+      {/* ══ CONTENT SPACER ═════════════════════════════════════ */}
       <div
-        className="relative flex flex-col items-center text-center px-6 pb-20"
+        className="relative px-6 pb-20"
         style={{ paddingTop: "max(180px, 43%)", zIndex: 10 }}
-      >
-        {/* Book button */}
-        <a
-          href={BOOKING_URL}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="reveal group inline-flex items-center gap-2 px-8 py-3.5 rounded-full border-0 sm:border border-bark/30 text-bark text-sm tracking-[0.2em] uppercase hover:border-rose/50 hover:text-rose transition-all duration-500 bg-white sm:bg-transparent mt-36 sm:mt-0"
-        >
-          <span>Book a Session</span>
-          <svg
-            className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            strokeWidth={1.5}
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
-          </svg>
-        </a>
-
-      </div>
+      />
 
       {/* ══ BOTTOM STRIP ═══════════════════════════════════════ */}
       <div

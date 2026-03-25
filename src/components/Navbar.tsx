@@ -187,7 +187,7 @@ export default function Navbar() {
                 rel="noopener noreferrer"
                 className="text-bark/40 hover:text-rose text-[10px] tracking-[0.2em] uppercase transition-colors duration-300"
               >
-                Instagram ↗
+                Instagram
               </a>
             </div>
           </div>
