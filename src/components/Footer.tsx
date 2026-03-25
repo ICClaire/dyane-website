@@ -21,10 +21,11 @@ export default function Footer() {
     /* In WebViews, skip scroll-driven parallax entirely — place clouds
        at their midpoint positions statically. Zero JS scroll overhead. */
     if (isInAppWebView) {
+      const isMobile = window.innerWidth < 640;
       gsap.set(".cloud-white",         { y: 10 });
-      gsap.set(".cloud-pink",          { y: 20 });
-      gsap.set(".cloud-purple-side",   { y: 40 });
-      gsap.set(".cloud-purple-bottom", { y: 40 });
+      gsap.set(".cloud-pink",          { y: isMobile ? 70 : 20 });
+      gsap.set(".cloud-purple-side",   { y: isMobile ? 120 : 40 });
+      gsap.set(".cloud-purple-bottom", { y: isMobile ? 120 : 40 });
       gsap.set(".footer-title",        { y: -10 });
       return;
     }
@@ -42,13 +43,13 @@ export default function Footer() {
       gsap.fromTo(".cloud-white", { y: isMobile ? 30 : 20 }, { y: isMobile ? -10 : -5, ease: "none", scrollTrigger: st });
 
       // Pink — mid layer
-      gsap.fromTo(".cloud-pink", { y: isMobile ? 320 : 320 }, { y: isMobile ? -280 : -260, ease: "none", scrollTrigger: st });
+      gsap.fromTo(".cloud-pink", { y: isMobile ? 320 : 320 }, { y: isMobile ? -180 : -260, ease: "none", scrollTrigger: st });
 
       // Purple side clouds
-      gsap.fromTo(".cloud-purple-side", { y: isMobile ? 600 : 600 }, { y: isMobile ? -520 : -500, ease: "none", scrollTrigger: st });
+      gsap.fromTo(".cloud-purple-side", { y: isMobile ? 600 : 600 }, { y: isMobile ? -380 : -500, ease: "none", scrollTrigger: st });
 
       // Purple bottom clouds
-      gsap.fromTo(".cloud-purple-bottom", { y: isMobile ? 600 : 600 }, { y: isMobile ? -520 : -500, ease: "none", scrollTrigger: st });
+      gsap.fromTo(".cloud-purple-bottom", { y: isMobile ? 600 : 600 }, { y: isMobile ? -380 : -500, ease: "none", scrollTrigger: st });
 
       // Title parallax — between pink and purple
       gsap.fromTo(

@@ -104,7 +104,10 @@ export default function ScrollDrawSVG({ src, className, style, svgStyle, autoPla
       return () => cancelAnimationFrame(rafId);
     }
 
-    const handleScroll = () => {
+    let rafId = 0;
+    let ticking = false;
+
+    const updateDraw = () => {
       const container = containerRef.current;
       if (!container) return;
       const rect = container.getBoundingClientRect();
@@ -122,12 +125,23 @@ export default function ScrollDrawSVG({ src, className, style, svgStyle, autoPla
         const p = Math.min(1, Math.max(0, (global - start) / (end - start)));
         el.setAttribute("stroke-dashoffset", String(length * (1 - p)));
       });
+      ticking = false;
+    };
+
+    const handleScroll = () => {
+      if (!ticking) {
+        rafId = requestAnimationFrame(updateDraw);
+        ticking = true;
+      }
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll();
+    updateDraw();
 
-    return () => window.removeEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      cancelAnimationFrame(rafId);
+    };
   }, [svgContent, autoPlay, autoPlayDuration]);
 
   return (

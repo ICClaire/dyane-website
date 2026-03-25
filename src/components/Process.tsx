@@ -100,7 +100,10 @@ export default function Process() {
     updateLayout();
     window.addEventListener("resize", updateLayout);
 
-    const handle = () => {
+    let rafId = 0;
+    let ticking = false;
+
+    const update = () => {
       if (!containerRef.current) return;
       const scrolled = -containerRef.current.getBoundingClientRect().top;
       const wh = window.innerHeight;
@@ -114,13 +117,22 @@ export default function Process() {
         const scale       = 1 - progress * (1 - targetScale);
         card.style.transform = `scale(${scale})`;
       });
+      ticking = false;
+    };
+
+    const handle = () => {
+      if (!ticking) {
+        rafId = requestAnimationFrame(update);
+        ticking = true;
+      }
     };
 
     window.addEventListener("scroll", handle, { passive: true });
-    handle();
+    update();
     return () => {
       window.removeEventListener("resize", updateLayout);
       window.removeEventListener("scroll", handle);
+      cancelAnimationFrame(rafId);
     };
   }, []);
 
