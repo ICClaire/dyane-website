@@ -74,53 +74,53 @@ export default function Navbar() {
       {/* ── Mobile pill navbar ── */}
       <header className="fixed top-0 left-0 right-0 z-[60] md:hidden px-4 pt-3">
         <nav
-          className={`flex items-center justify-between px-5 py-3 rounded-full transition-all duration-500 ${
+          className={`relative flex items-center justify-between px-5 py-3 rounded-full transition-all duration-500 ${
             scrolled || menuOpen
               ? "bg-cream/95 backdrop-blur-md shadow-lg"
               : "bg-cream/70 backdrop-blur-sm"
           }`}
         >
+          {/* Left: Hamburger */}
+          <button
+            className="relative w-9 h-9 flex items-center justify-center"
+            onClick={() => setMenuOpen((o) => !o)}
+            aria-label={menuOpen ? "Close menu" : "Open menu"}
+          >
+            <span
+              className={`absolute block w-5 h-px bg-bark transition-all duration-400 ease-[cubic-bezier(.76,0,.24,1)] ${
+                menuOpen ? "rotate-45 translate-y-0" : "-translate-y-[5px]"
+              }`}
+            />
+            <span
+              className={`absolute block h-px bg-bark transition-all duration-400 ease-[cubic-bezier(.76,0,.24,1)] ${
+                menuOpen ? "w-0 opacity-0" : "w-5 opacity-100"
+              }`}
+            />
+            <span
+              className={`absolute block w-5 h-px bg-bark transition-all duration-400 ease-[cubic-bezier(.76,0,.24,1)] ${
+                menuOpen ? "-rotate-45 translate-y-0" : "translate-y-[5px]"
+              }`}
+            />
+          </button>
+
+          {/* Centre: Logo — absolutely centred */}
           <a
             href="#"
             onClick={() => setMenuOpen(false)}
-            className="font-heading text-2xl tracking-normal text-bark hover:text-rose transition-colors duration-300"
+            className="absolute left-[45%] -translate-x-1/2 font-heading text-2xl tracking-normal text-bark hover:text-rose transition-colors duration-300"
           >
             chan.inked
           </a>
 
-          <div className="flex items-center gap-3">
-            <a
-              href="https://www.instagram.com/chan.inkedd/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-[10px] tracking-[0.12em] uppercase px-4 py-2 bg-rose text-cream rounded-full font-semibold"
-            >
-              Let&apos;s Talk
-            </a>
-
-            {/* Hamburger / X */}
-            <button
-              className="relative w-9 h-9 flex items-center justify-center"
-              onClick={() => setMenuOpen((o) => !o)}
-              aria-label={menuOpen ? "Close menu" : "Open menu"}
-            >
-              <span
-                className={`absolute block w-5 h-px bg-bark transition-all duration-400 ease-[cubic-bezier(.76,0,.24,1)] ${
-                  menuOpen ? "rotate-45 translate-y-0" : "-translate-y-[5px]"
-                }`}
-              />
-              <span
-                className={`absolute block h-px bg-bark transition-all duration-400 ease-[cubic-bezier(.76,0,.24,1)] ${
-                  menuOpen ? "w-0 opacity-0" : "w-5 opacity-100"
-                }`}
-              />
-              <span
-                className={`absolute block w-5 h-px bg-bark transition-all duration-400 ease-[cubic-bezier(.76,0,.24,1)] ${
-                  menuOpen ? "-rotate-45 translate-y-0" : "translate-y-[5px]"
-                }`}
-              />
-            </button>
-          </div>
+          {/* Right: Let's Talk CTA */}
+          <a
+            href="https://www.instagram.com/chan.inkedd/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-[10px] tracking-[0.12em] uppercase px-4 py-2 bg-rose text-cream rounded-full font-semibold"
+          >
+            Let&apos;s Talk
+          </a>
         </nav>
 
         {/* ── Dropdown menu ── */}
